@@ -1,0 +1,616 @@
+<?xml version="1.0"?>
+<!DOCTYPE benchmark [
+          <!ENTITY partitionerOptions    SYSTEM "../partitionerOptions.xml">
+          <!ENTITY scalingOptions        SYSTEM "../scalingOptions.xml">
+          <!ENTITY scalingOptionsCilk    SYSTEM "../scalingOptions-cilk.xml">
+          <!ENTITY commonCompilerOptions SYSTEM "../commonCompilerOptions.xml">
+          <!ENTITY amortizingCutoff      SYSTEM "./amortizing.xml">
+          <!ENTITY sensitivityExecutions SYSTEM "./sensitivity.xml">
+]>
+
+<benchmark_set>
+    <benchmark_name>Queens</benchmark_name>
+
+    <dataset>
+        <name>4</name>
+        <xbofile>-D SIZE=4</xbofile>
+        <validhexfile>valid4solution_count.hex</validhexfile>
+    </dataset>
+    
+    <dataset>
+        <name>5</name>
+        <xbofile>-D SIZE=5</xbofile>
+        <validhexfile>valid5solution_count.hex</validhexfile>
+    </dataset>
+    
+    <dataset>
+        <name>6</name>
+        <xbofile>-D SIZE=6</xbofile>
+        <validhexfile>valid6solution_count.hex</validhexfile>
+    </dataset>
+    
+    <dataset>
+        <name>7</name>
+        <xbofile>-D SIZE=7</xbofile>
+        <validhexfile>valid7solution_count.hex</validhexfile>
+    </dataset>
+    
+    <dataset>
+        <name>8</name>
+        <xbofile>-D SIZE=8</xbofile>
+        <validhexfile>valid8solution_count.hex</validhexfile>
+    </dataset>
+    
+    <dataset>
+        <name>9</name>
+        <xbofile>-D SIZE=9</xbofile>
+        <validhexfile>valid9solution_count.hex</validhexfile>
+    </dataset>
+    
+    <dataset>
+        <name>10</name>
+        <xbofile>-D SIZE=10</xbofile>
+        <validhexfile>valid10solution_count.hex</validhexfile>
+    </dataset>
+    
+    <dataset>
+        <name>11</name>
+        <xbofile>-D SIZE=11</xbofile>
+        <validhexfile>valid11solution_count.hex</validhexfile>
+    </dataset>
+    
+    <dataset>
+        <name>12</name>
+        <xbofile>-D SIZE=12</xbofile>
+        <validhexfile>valid12solution_count.hex</validhexfile>
+    </dataset>
+
+    <dataset>
+        <name>13</name>
+        <xbofile>-D SIZE=13</xbofile>
+        <validhexfile>valid13solution_count.hex</validhexfile>
+    </dataset>
+
+    <dataset>
+        <name>14</name>
+        <xbofile>-D SIZE=14</xbofile>
+        <validhexfile>valid14solution_count.hex</validhexfile>
+    </dataset>
+    
+    <dataset>
+        <name>14NC</name>
+        <xbofile>-D SIZE=14</xbofile>
+        <validhexfile>valid14NCsolution_count.hex</validhexfile>
+    </dataset>
+    
+    <dataset>
+        <name>15</name>
+        <xbofile>-D SIZE=15</xbofile>
+        <validhexfile>valid15solution_count.hex</validhexfile>
+    </dataset>
+    
+    <dataset>
+        <name>16</name>
+        <xbofile>-D SIZE=16</xbofile>
+    </dataset>
+    
+    <dataset>
+        <name>20</name>
+        <xbofile>-D SIZE=20</xbofile>
+    </dataset>
+    
+    <dataset>
+        <name>22</name>
+        <xbofile>-D SIZE=22</xbofile>
+    </dataset>
+    
+    <dataset>
+        <name>24</name>
+        <xbofile>-D SIZE=24</xbofile>
+    </dataset>
+    
+  <benchmark>
+      <name>ser</name>
+      <filename>ser_queens.c ../xboutils/xboutils.o</filename>
+      <dumpvar>result.hex</dumpvar>
+  </benchmark>
+  
+  <benchmark>
+      <name>serOpt</name>
+      <filename>ser_queens_opt.c ../xboutils/xboutils.o</filename>
+      <dumpvar>result.hex</dumpvar>
+  </benchmark>
+ 
+  <!-- Count how many parallel tasks are created, but running a serial code --> 
+  <benchmark>
+      <name>serOptCount</name>
+      <filename>ser_queens_opt_count.c ../xboutils/xboutils.o</filename>
+      <dumpvar>result.hex</dumpvar>
+  </benchmark>
+  
+  <benchmark>
+      <name>par</name>
+      <filename>queens.cpp ../xboutils/xboutils.o</filename>
+      <dumpvar>result.hex</dumpvar>
+  </benchmark>
+  
+  <benchmark>
+      <name>parCut</name>
+      <filename>queens.cpp -D CUTOFF ../xboutils/xboutils.o</filename>
+      <dumpvar>result.hex</dumpvar>
+  </benchmark>
+  
+  <benchmark>
+      <name>cilk</name>
+      <filename>queens-cilkpp.cpp ../xboutils/xboutils.c </filename>
+      <dumpvar>result.hex</dumpvar>
+  </benchmark>
+  
+  <benchmark>
+      <name>cilk-nocount</name>
+      <filename>queens-cilkpp-nocount.cpp ../xboutils/xboutils.c </filename>
+      <dumpvar>result.hex</dumpvar>
+  </benchmark>
+  
+  <benchmark>
+      <name>parNoMalloc</name>
+      <filename>queens_nomalloc.cpp ../xboutils/xboutils.o</filename>
+      <dumpvar>result.hex</dumpvar>
+  </benchmark>
+  
+  <benchmark>
+      <name>parNoMallocCut</name>
+      <filename>queens_nomalloc.cpp -D CUTOFF ../xboutils/xboutils.o</filename>
+      <dumpvar>result.hex</dumpvar>
+  </benchmark>
+
+  <benchmark>
+      <name>parNoMallocCutNm4</name>
+      <filename>queens_nomalloc.cpp -D CUTOFF -D CUTOFF_LEVEL=(SIZE-4) ../xboutils/xboutils.o</filename>
+      <dumpvar>result.hex</dumpvar>
+  </benchmark>
+ 
+  <benchmark>
+      <name>parNoMallocCutNm5</name>
+      <filename>queens_nomalloc.cpp -D CUTOFF -D CUTOFF_LEVEL=(SIZE-5) ../xboutils/xboutils.o</filename>
+      <dumpvar>result.hex</dumpvar>
+  </benchmark>
+ 
+  <!-- Manually edited code to allow it to check the deque size and decide whether to return to
+       the scheduler or keep executing iterations. Incurs all of TBB's object creation overheads
+       even if all iterations are executed sequentially. -->     
+  <benchmark>
+      <name>parMeldslow</name>
+      <filename>queens_nomalloc_meld_slow.cpp ../xboutils/xboutils.o -D _TBB_MELD</filename>
+      <dumpvar>result.hex</dumpvar>
+  </benchmark>
+  
+  <!-- Manually edited code to never even call the scheduler unless the deque is below a 
+       threshold. The recursive function nqueens_rec duplicates the code of the Body -->
+  <benchmark>
+      <name>parMelddup</name>
+      <filename>queens_nomalloc_meld.cpp ../xboutils/xboutils.o -D _TBB_MELD -D _TBB_MELD_ALLOW_CODE_DUPLICATION</filename>
+      <dumpvar>result.hex</dumpvar>
+  </benchmark>
+
+  <!-- Manually edited code to never even call the scheduler unless the deque is below a 
+       threshold. The recursive function nqueens_rec calls the code of the Body (i.e., no
+       code duplication). -->
+  <benchmark>
+      <name>parMeld</name>
+      <filename>queens_nomalloc_meld.cpp ../xboutils/xboutils.o -D _TBB_MELD</filename>
+      <dumpvar>result.hex</dumpvar>
+  </benchmark>
+ 
+  <!-- Attempt to fix the issue of parMeld of not adding all the tasks to the deque of 
+       postponed tasks.
+       Manually edited code to never even call the scheduler unless the deque is below a 
+       threshold. The recursive function nqueens_rec calls the code of the Body (i.e., no
+       code duplication). -->
+  <benchmark>
+      <name>parMeldv3</name>
+      <filename>queens_nomalloc_meldv3.cpp ../xboutils/xboutils.o -D _TBB_MELD</filename>
+      <dumpvar>result.hex</dumpvar>
+  </benchmark>
+ 
+  <benchmark>
+      <name>parMeldCut</name>
+      <filename>queens_nomalloc_meld.cpp ../xboutils/xboutils.o -D _TBB_MELD -D CUTOFF -D CUTOFF_LEVEL=(SIZE/2)</filename>
+      <dumpvar>result.hex</dumpvar>
+  </benchmark>
+ 
+  <benchmark>
+      <name>parMeldCutNm4</name>
+      <filename>queens_nomalloc_meld.cpp ../xboutils/xboutils.o -D _TBB_MELD -D CUTOFF -D CUTOFF_LEVEL=(SIZE-4)</filename>
+      <dumpvar>result.hex</dumpvar>
+  </benchmark>
+ 
+  <!-- After depth N/2 switch to pseudo-parallel loops instead of serial loops to gauge the
+       overheads from the TBB library -->
+  <benchmark>
+      <name>parMix</name>
+      <filename>queens_nomalloc_mix.cpp ../xboutils/xboutils.o -D CUTOFF -D CUTOFF_LEVEL=(SIZE/2)</filename>
+      <dumpvar>result.hex</dumpvar>
+  </benchmark>
+  
+  <execution>
+      <name>parAll</name>
+      <type>tbb</type>
+      <benchmarks>par,parNoMalloc, parCut, parNoMallocCut</benchmarks>
+      <datasets>14</datasets>
+      <compiler_options>
+          <set>x8: -D TIMES=8</set>
+          &commonCompilerOptions;
+          &partitionerOptions;
+          &scalingOptions;
+      </compiler_options>
+  </execution>
+
+  <execution>
+      <name>par</name>
+      <type>tbb</type>
+      <benchmarks>parNoMallocCut, parNoMallocCutNm4, parNoMalloc</benchmarks>
+      <datasets>14</datasets>
+      <compiler_options>
+          <!--<set>x8: -D TIMES=8</set>-->
+          <set>x4: -D TIMES=4</set>
+          &commonCompilerOptions;
+          &partitionerOptions;
+          &scalingOptions;
+      </compiler_options>
+  </execution>
+
+  <execution>
+      <name>parOptCutNm4</name>
+      <type>tbb</type>
+      <benchmarks>parNoMallocCutNm4</benchmarks>
+      <datasets>14</datasets>
+      <compiler_options>
+          <set>x8: -D TIMES=8</set>
+          &commonCompilerOptions;
+          &partitionerOptions;
+          &scalingOptions;
+      </compiler_options>
+  </execution>
+
+  <execution>
+      <name>parOptAmortized</name>
+      <type>tbb</type>
+      <benchmarks>parNoMallocCutNm5</benchmarks>
+      <datasets>14</datasets>
+      <compiler_options>
+          <set>x8: -D TIMES=8</set>
+          &commonCompilerOptions;
+          <set>
+              LazyBF: -D __TBB_LAZY_BF_EXECUTION  -D SIMPLE_PARTITIONER,
+              LazyDF2-LS: -D __TBB_LAZY_DF_EXECUTION  -D SIMPLE_PARTITIONER -D DEQUE_THRESH=2,
+              LazyDF: -D __TBB_LAZY_DF_EXECUTION  -D SIMPLE_PARTITIONER,
+              EAutoP: -D AUTO_PARTITIONER
+          </set>
+          &scalingOptions;
+      </compiler_options>
+  </execution>
+
+  <execution>
+      <name>parMeldold</name>
+      <type>tbb</type>
+      <benchmarks>parNoMalloc,parMeld, parMix, parNoMallocCut</benchmarks>
+      <datasets>14</datasets>
+      <compiler_options>
+          <set>x8: -D TIMES=8</set>
+          &commonCompilerOptions;
+          <set>
+              LazyBF: -D __TBB_LAZY_BF_EXECUTION  -D SIMPLE_PARTITIONER
+          </set>
+          <!--&scalingOptions;-->
+      </compiler_options>
+  </execution>
+
+  <execution>
+      <name>parMeld</name>
+      <type>tbb</type>
+      <benchmarks>parMeld, parMelddup, parMeldslow, parMeldCut, parMeldCutNm4</benchmarks>
+      <datasets>14</datasets>
+      <compiler_options>
+          <set>x4: -D TIMES=4</set>
+          &commonCompilerOptions;
+          <set>
+              LazyBF: -D __TBB_LAZY_BF_EXECUTION  -D SIMPLE_PARTITIONER
+          </set>
+          <!--&scalingOptions;-->
+          &scalingOptions;
+      </compiler_options>
+  </execution>
+
+  <execution>
+      <name>parMeldv3</name>
+      <type>tbb</type>
+      <benchmarks>parMeldv3</benchmarks>
+      <datasets>14</datasets>
+      <compiler_options>
+          <set>x4: -D TIMES=4</set>
+          &commonCompilerOptions;
+          <set>
+              LazyBF: -D __TBB_LAZY_BF_EXECUTION  -D SIMPLE_PARTITIONER
+          </set>
+          <!--&scalingOptions;-->
+      </compiler_options>
+  </execution>
+
+  <execution>
+      <name>parNoCutOff</name>
+      <type>tbb</type>
+      <benchmarks>par,parNoMalloc</benchmarks>
+      <datasets>14</datasets>
+      <compiler_options>
+          &commonCompilerOptions;
+          &partitionerOptions;
+          &scalingOptions;
+      </compiler_options>
+  </execution>
+
+  <execution>
+      <name>parOptNoCutOff</name>
+      <type>tbb</type>
+      <benchmarks>parNoMalloc</benchmarks>
+      <datasets>14</datasets>
+      <compiler_options>
+          &commonCompilerOptions;
+          &partitionerOptions;
+          &scalingOptions;
+      </compiler_options>
+  </execution>
+
+  <execution>
+      <name>tbb4.1</name>
+      <type>tbb</type>
+      <benchmarks>parNoMalloc</benchmarks>
+      <datasets>14</datasets>
+      <compiler_options>
+          &commonCompilerOptions;
+          <set>x8: -D TIMES=8 -D AUTO_PARTITIONER</set>
+          <set>decl: ,
+               amortized: -D CUTOFF -D CUTOFF_LEVEL=(SIZE-5),
+               tuned2: -D CUTOFF -D CUTOFF_LEVEL=(SIZE/2),
+               tuned3: -D CUTOFF -D CUTOFF_LEVEL=(SIZE/3)</set>
+          &scalingOptions;
+      </compiler_options>
+  </execution>
+
+  <execution>
+      <name>parOptCutOffNm4</name>
+      <type>tbb</type>
+      <benchmarks>parNoMallocCut</benchmarks>
+      <datasets>14</datasets>
+      <compiler_options>
+          &commonCompilerOptions;
+          <set>CNm4:-D CUTOFF_LEVEL=(SIZE-4)</set>
+          &partitionerOptions;
+          &scalingOptions;
+      </compiler_options>
+  </execution>
+
+  <execution>
+      <name>parOptVarCutOff</name>
+      <type>tbb</type>
+      <benchmarks>parNoMallocCut</benchmarks>
+      <datasets>14</datasets>
+      <compiler_options>
+          &commonCompilerOptions;
+          <set> C2:-D CUTOFF_LEVEL=2,
+                C4:-D CUTOFF_LEVEL=4,
+                C6:-D CUTOFF_LEVEL=6,
+                C8:-D CUTOFF_LEVEL=8,
+               C10:-D CUTOFF_LEVEL=10,
+               C12:-D CUTOFF_LEVEL=12,
+               C14:-D CUTOFF_LEVEL=14 
+          </set>
+          &scalingOptions;
+          &partitionerOptions;
+      </compiler_options>
+  </execution>
+
+  <execution>
+      <name>overheadMeasurement</name>
+      <type>tbb</type>
+      <benchmarks>parNoMallocCut</benchmarks>
+      <datasets>14</datasets>
+      <compiler_options>
+          &commonCompilerOptions;
+          <set> 
+                C0:-D CUTOFF_LEVEL=0,
+                C1:-D CUTOFF_LEVEL=1,
+                C2:-D CUTOFF_LEVEL=2,
+                C3:-D CUTOFF_LEVEL=3,
+                C4:-D CUTOFF_LEVEL=4,
+                C5:-D CUTOFF_LEVEL=5,
+                C6:-D CUTOFF_LEVEL=6,
+                C7:-D CUTOFF_LEVEL=7,
+                C8:-D CUTOFF_LEVEL=8,
+                C9:-D CUTOFF_LEVEL=9,
+               C10:-D CUTOFF_LEVEL=10,
+               C11:-D CUTOFF_LEVEL=11,
+               C12:-D CUTOFF_LEVEL=12,
+               C13:-D CUTOFF_LEVEL=13,
+               C14:-D CUTOFF_LEVEL=14 
+          </set>
+          <set>1th: :1</set>
+          <set>EAutoP: -D AUTO_PARTITIONER,
+               LazyBF: -D __TBB_LAZY_BF_EXECUTION  -D SIMPLE_PARTITIONER
+          </set>
+      </compiler_options>
+  </execution>
+
+  <execution>
+      <name>parallelismMeasurement</name>
+      <type>tbb</type>
+      <benchmarks>serOptCount</benchmarks>
+      <datasets>14</datasets>
+      <compiler_options>
+          <set>x1: -D TIMES=1  -D CUTOFF</set>
+          &commonCompilerOptions;
+          <set> 
+                C0:-D CUTOFF_LEVEL=0,
+                C1:-D CUTOFF_LEVEL=1,
+                C2:-D CUTOFF_LEVEL=2,
+                C3:-D CUTOFF_LEVEL=3,
+                C4:-D CUTOFF_LEVEL=4,
+                C5:-D CUTOFF_LEVEL=5,
+                C6:-D CUTOFF_LEVEL=6,
+                C7:-D CUTOFF_LEVEL=7,
+                C8:-D CUTOFF_LEVEL=8,
+                C9:-D CUTOFF_LEVEL=9,
+               C10:-D CUTOFF_LEVEL=10,
+               C11:-D CUTOFF_LEVEL=11,
+               C12:-D CUTOFF_LEVEL=12,
+               C13:-D CUTOFF_LEVEL=13,
+               C14:-D CUTOFF_LEVEL=14 
+          </set>
+      </compiler_options>
+  </execution>
+
+  <execution>
+      <name>parCutOff</name>
+      <type>tbb</type>
+      <benchmarks>parCut,parNoMallocCut</benchmarks>
+      <datasets>14</datasets>
+      <compiler_options>
+          &commonCompilerOptions;
+          &partitionerOptions;
+          &scalingOptions;
+      </compiler_options>
+  </execution>
+
+  <execution>
+      <name>parLBS</name>
+      <type>tbb</type>
+      <benchmarks>par</benchmarks>
+      <datasets>14</datasets>
+      <compiler_options>
+          &commonCompilerOptions;
+          <set>noCutOff: ,
+               cutOff: -D CUTOFF
+          </set>
+          <set>LazySP-T2: -D __TBB_LAZY_EXECUTION  -D SIMPLE_PARTITIONER -D DEQUE_THRESH=2,
+               LazySP-T1: -D __TBB_LAZY_EXECUTION  -D SIMPLE_PARTITIONER,
+               LazySP-T1-D1:-D __TBB_LAZY_EXECUTION  -D SIMPLE_PARTITIONER -D LBS_SPLIT_DELAY=1,
+               LazySP-T1-D2:-D __TBB_LAZY_EXECUTION  -D SIMPLE_PARTITIONER -D LBS_SPLIT_DELAY=2,
+               LazySP-T1-D4:-D __TBB_LAZY_EXECUTION  -D SIMPLE_PARTITIONER -D LBS_SPLIT_DELAY=4,
+               LazySP-T1-D25:-D __TBB_LAZY_EXECUTION  -D SIMPLE_PARTITIONER -D LBS_SPLIT_DELAY=25
+          </set>
+          &scalingOptions;
+      </compiler_options>
+  </execution>
+
+  <execution>
+      <name>ser</name>
+      <type>tbb</type>
+      <benchmarks>ser, serOpt</benchmarks>
+      <datasets>14</datasets>
+      <compiler_options>
+          &commonCompilerOptions;
+      </compiler_options>
+  </execution>
+
+  <execution>
+      <name>serOptCount</name>
+      <type>tbb</type>
+      <benchmarks>serOptCount</benchmarks>
+      <datasets>14</datasets>
+      <compiler_options>
+          <set>x1: -D TIMES=1</set>-->
+          <set>decl: ,
+               amortized: -D CUTOFF -D CUTOFF_LEVEL=(SIZE-5),
+               tuned: -D CUTOFF -D CUTOFF_LEVEL=(SIZE/2)</set>
+          &commonCompilerOptions;
+      </compiler_options>
+  </execution>
+
+  <execution>
+      <name>cilk</name>
+      <type>cilkpp</type>
+      <benchmarks>cilk</benchmarks>
+      <datasets>14</datasets>
+      <compiler_options>
+          &commonCompilerOptions;
+          <set>x8: -D TIMES=8</set>
+          <set>decl: ,
+               amortized: -D CUTOFF -D CUTOFF_LEVEL=(SIZE-5),
+               tuned2: -D CUTOFF -D CUTOFF_LEVEL=(SIZE/2),
+               tuned3: -D CUTOFF -D CUTOFF_LEVEL=(SIZE/3)</set>
+          &scalingOptionsCilk;
+      </compiler_options>
+  </execution>
+
+  <execution>
+      <name>cilk-nocount</name>
+      <type>cilkpp</type>
+      <benchmarks>cilk-nocount</benchmarks>
+      <datasets>14NC</datasets>
+      <compiler_options>
+          &commonCompilerOptions;
+          <set>x8: -D TIMES=8</set>
+          <set> 
+               tuned2: -D CUTOFF -D CUTOFF_LEVEL=(SIZE/2)
+          </set>
+          &scalingOptionsCilk;
+      </compiler_options>
+  </execution>
+
+
+  <execution>
+      <name>serOpt</name>
+      <type>tbb</type>
+      <benchmarks>serOpt</benchmarks>
+      <datasets>14</datasets>
+      <compiler_options>
+          <set>x4: -D TIMES=4</set>
+          &commonCompilerOptions;
+      </compiler_options>
+  </execution>
+
+
+  <execution>
+      <name>TestSer</name>
+      <type>tbb</type>
+      <benchmarks>ser, serOpt</benchmarks>
+      <datasets>8,9,10,11,12,14</datasets>
+      <compiler_options>
+          &commonCompilerOptions;
+      </compiler_options>
+  </execution>
+
+  <execution>
+      <name>TestPar</name>
+      <type>tbb</type>
+      <benchmarks>par,parNoMalloc, parCut, parNoMallocCut</benchmarks>
+      <datasets>8,9,10,11,12</datasets>
+      <compiler_options>
+          &commonCompilerOptions;
+          &partitionerOptions;
+      </compiler_options>
+  </execution>
+
+  <runnable>ser</runnable>
+
+  &sensitivityExecutions;
+
+  &amortizingCutoff;
+
+  <execution>
+      <name>sens46buzz</name>
+      <type>tbb</type>
+      <benchmarks>parNoMalloc</benchmarks>
+      <datasets>4</datasets>
+      <compiler_options>
+          <set>EAutoP: -D AUTO_PARTITIONER</set>
+          <set>
+                C2: -D CUTOFF -D CUTOFF_LEVEL=2,
+                NC4:
+          </set>
+          &commonCompilerOptions;
+          &scalingOptions;
+      </compiler_options>
+  </execution>
+
+</benchmark_set>

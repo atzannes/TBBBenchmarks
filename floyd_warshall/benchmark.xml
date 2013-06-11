@@ -1,0 +1,136 @@
+<?xml version="1.0"?>
+<!DOCTYPE benchmark [
+          <!ENTITY partitionerOptions SYSTEM "../partitionerOptions.xml">
+          <!ENTITY scalingOptions     SYSTEM "../scalingOptions.xml">
+          <!ENTITY commonCompilerOptions SYSTEM "../commonCompilerOptions.xml">
+]>
+
+<benchmark_set>
+    <benchmark_name>Floyd Warshall (All Pairs Shortest Path)</benchmark_name>
+
+    <dataset>
+        <name>64</name>
+        <hfile>64/allpairs.h</hfile>
+        <xbofile>64/allpairs.o</xbofile>
+        <validhexfile>64/valid64R.hex</validhexfile>
+    </dataset>
+    
+    <dataset>
+        <name>256</name>
+        <hfile>256/allpairs.h</hfile>
+        <xbofile>256/allpairs.o</xbofile>
+        <validhexfile>256/valid256R.hex</validhexfile>
+    </dataset>
+    
+    <dataset>
+        <name>512</name>
+        <hfile>512/allpairs.h</hfile>
+        <xbofile>512/allpairs.o</xbofile>
+        <validhexfile>512/valid512R.hex</validhexfile>
+    </dataset>
+    
+    <dataset>
+        <name>1024</name>
+        <hfile>1024/allpairs.h</hfile>
+        <xbofile>1024/allpairs.o</xbofile>
+        <validhexfile>1024/valid1024R.hex</validhexfile>
+    </dataset>
+    
+    <dataset>
+        <name>2048</name>
+        <hfile>2048/allpairs.h</hfile>
+        <xbofile>2048/allpairs.o</xbofile>
+        <validhexfile>2048/valid2048R.hex</validhexfile>
+    </dataset>
+    
+    <benchmark>
+        <name>ser</name>
+        <filename>floyd_warshall.cpp -D SERIAL ../xboutils/xboutils.o</filename>
+        <dumpvar>result.hex</dumpvar>
+    </benchmark>
+  
+    <benchmark>
+        <name>par-1d</name>
+        <filename>floyd_warshall.cpp -D PARALLEL_1D ../xboutils/xboutils.o</filename>
+        <dumpvar>result.hex</dumpvar>
+    </benchmark>
+
+    <benchmark>
+        <name>par-2d</name>
+        <filename>floyd_warshall.cpp ../xboutils/xboutils.o</filename>
+        <dumpvar>result.hex</dumpvar>
+    </benchmark>
+  
+    <execution>
+      <name>par</name>
+      <type>tbb</type>
+      <benchmarks>par-2d</benchmarks>
+      <!--<datasets>512</datasets>-->
+      <datasets>2048</datasets>
+      <compiler_options>
+          &commonCompilerOptions;
+          <!--<set>x15: -D TIMES=15</set>-->
+          <!--<set>x30: -D TIMES=30</set>-->
+          <set> : ,
+               ppt91: -D INIT_INNER_GRAINSIZE=91  -D COMPUTE_INNER_GRAINSIZE=91
+          </set>
+          &partitionerOptions;
+          &scalingOptions;
+      </compiler_options>
+    </execution>
+
+    <execution>
+      <name>parBFLS</name>
+      <type>tbb</type>
+      <!--<benchmarks>par-1d, par-2d</benchmarks>-->
+      <benchmarks>par-2d</benchmarks>
+      <datasets>512</datasets>
+      <compiler_options>
+          <set>x15: -D TIMES=15</set>
+          &commonCompilerOptions;
+          <set>AP : -D AUTO_PARTITIONER,
+               BFLS-91ppt: -D __TBB_LAZY_BF_EXECUTION  -D SIMPLE_PARTITIONER -D INIT_INNER_GRAINSIZE=91  -D COMPUTE_INNER_GRAINSIZE=91
+          </set>
+          <!--&scalingOptions;-->
+      </compiler_options>
+    </execution>
+
+    <execution>
+      <name>ser</name>
+      <type>tbb</type>
+      <benchmarks>ser</benchmarks>
+      <!--<datasets>512</datasets>-->
+      <datasets>2048</datasets>
+      <compiler_options>
+          &commonCompilerOptions;
+          <!--<set>x15: -D TIMES=15</set>-->
+      </compiler_options>
+  </execution>
+
+    <execution>
+      <name>TestSer</name>
+      <type>tbb</type>
+      <benchmarks>ser</benchmarks>
+      <datasets>64,256,512</datasets>
+      <compiler_options>
+          &commonCompilerOptions;
+      </compiler_options>
+  </execution>
+
+    <execution>
+      <name>TestPar</name>
+      <type>tbb</type>
+      <benchmarks>par-1d, par-2d</benchmarks>
+      <datasets>64,256,512</datasets>
+      <compiler_options>
+          &commonCompilerOptions;
+          <set> : ,
+               ppt91: -D INIT_INNER_GRAINSIZE=91  -D COMPUTE_INNER_GRAINSIZE=91,
+          </set>
+          &partitionerOptions;
+      </compiler_options>
+    </execution>
+
+<runnable>ser</runnable>
+
+</benchmark_set>

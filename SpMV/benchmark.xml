@@ -1,0 +1,143 @@
+<?xml version="1.0"?>
+<!DOCTYPE benchmark [
+          <!ENTITY partitionerOptions SYSTEM "../partitionerOptions.xml">
+          <!ENTITY scalingOptions     SYSTEM "../scalingOptions.xml">
+          <!ENTITY commonCompilerOptions SYSTEM "../commonCompilerOptions.xml">
+]>
+
+<benchmark_set>
+    <benchmark_name>SpMV</benchmark_name>
+
+    <dataset>
+        <name>20k</name>
+        <hfile>20k/spmv.h</hfile>
+        <xbofile>-D XBOFILE="20k/spmv.xbo"</xbofile>
+        <validhexfile>20k/valid20kresult.hex</validhexfile>
+    </dataset>
+    
+    <dataset>
+        <name>30k</name>
+        <hfile>30k/spmv.h</hfile>
+        <xbofile>-D XBOFILE="30k/spmv.xbo"</xbofile>
+        <validhexfile>30k/valid30kresult.hex</validhexfile>
+    </dataset>
+    
+    <dataset>
+        <name>4M</name>
+        <hfile>4M/spmv.h</hfile>
+        <xbofile>-D XBOFILE="4M/spmv.xbo"</xbofile>
+        <validhexfile>4M/valid4Mresult.hex</validhexfile>
+    </dataset>
+    
+    <dataset>
+        <name>40M</name>
+        <hfile>40M/spmv.h</hfile>
+        <xbofile>-D XBOFILE="40M/spmv.xbo"</xbofile>
+        <validhexfile>40M/valid40Mresult.hex</validhexfile>
+    </dataset>
+    
+  <benchmark>
+      <name>ser</name>
+      <filename>serial_spmv.c ../xboutils/xboutils.o</filename>
+      <dumpvar>result.hex</dumpvar>
+  </benchmark>
+  
+  <benchmark>
+      <name>parSer</name>
+      <filename>spmv.cpp ../xboutils/xboutils.o -D SERIAL_REDUCTION</filename>
+      <dumpvar>result.hex</dumpvar>
+  </benchmark>
+
+  <benchmark>
+      <name>parTBB</name>
+      <filename>spmv.cpp ../xboutils/xboutils.o -D TBB_REDUCTION</filename>
+      <dumpvar>result.hex</dumpvar>
+  </benchmark>
+
+  <benchmark>
+      <name>parXMT</name>
+      <filename>spmv.cpp ../xboutils/xboutils.o</filename>
+      <dumpvar>result.hex</dumpvar>
+  </benchmark>
+
+  <execution>
+      <name>par</name>
+      <type>tbb</type>
+      <benchmarks>parSer, parTBB, parXMT</benchmarks>
+      <datasets>40M</datasets>
+      <compiler_options>
+          <set>x20: -D TIMES=20</set>
+          &commonCompilerOptions;
+          <set>     : , 
+               ppt77: -D INNER_GRAINSIZE=77
+          </set>
+          <!-- AUTO_PPT tries to determine at runtime the PPT but it's too slow :(
+          <set>     : , 
+               ppt77: -D INNER_GRAINSIZE=77,
+               AUTO_PPT: -D __TBB_AUTO_PPT </set>
+          -->
+          &partitionerOptions;
+          &scalingOptions;
+      </compiler_options>
+  </execution>
+
+  <execution>
+      <name>parLBS</name>
+      <type>tbb</type>
+      <benchmarks>parSer, parTBB, parXMT</benchmarks>
+      <datasets>40M</datasets>
+      <compiler_options>
+          <set>x20: -D TIMES=20</set>
+          <set>LazySP-T2: -D __TBB_LAZY_EXECUTION  -D SIMPLE_PARTITIONER -D DEQUE_THRESH=2</set>
+          &commonCompilerOptions;
+          <set>     : , 
+               ppt77: -D INNER_GRAINSIZE=77
+          </set>
+          <!-- AUTO_PPT tries to determine at runtime the PPT but it's too slow :(
+          <set>     : , 
+               ppt77: -D INNER_GRAINSIZE=77,
+               AUTO_PPT: -D __TBB_AUTO_PPT </set>
+          -->
+          &scalingOptions;
+      </compiler_options>
+  </execution>
+
+  <execution>
+      <name>ser</name>
+      <type>tbb</type>
+      <benchmarks>ser</benchmarks>
+      <datasets>40M</datasets>
+      <compiler_options>
+          <set>x20: -D TIMES=20</set>
+          &commonCompilerOptions;
+      </compiler_options>
+  </execution>
+
+  <execution>
+      <name>TestSer</name>
+      <type>tbb</type>
+      <benchmarks>ser</benchmarks>
+      <datasets>20k, 30k, 4M, 40M</datasets>
+      <compiler_options>
+          &commonCompilerOptions;
+      </compiler_options>
+  </execution>
+
+  <execution>
+      <name>TestPar</name>
+      <type>tbb</type>
+      <benchmarks>parSer, parTBB, parXMT</benchmarks>
+      <datasets>20k, 30k, 4M, 40M</datasets>
+      <compiler_options>
+          &commonCompilerOptions;
+          <set>     : , 
+               ppt77: -D INNER_GRAINSIZE=77
+          </set>
+          &partitionerOptions;
+      </compiler_options>
+  </execution>
+
+
+<runnable>ser</runnable>
+  
+</benchmark_set>

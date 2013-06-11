@@ -1,0 +1,47 @@
+  <!-- Experiment to find depth for amortizing parallelism -->
+  <execution>
+      <name>amortizing4</name>
+      <type>tbb</type>
+      <benchmarks>parNoMalloc</benchmarks>
+      <datasets>4</datasets>
+      <compiler_options>
+          <set>BF-LS-x150K-C1: -D __TBB_LAZY_BF_EXECUTION  -D SIMPLE_PARTITIONER -D TIMES=150000 -D CUTOFF -D CUTOFF_LEVEL=1</set>
+          <set>
+              2thx1: -D SENS_TIMES=1: 2,
+             64thx1: -D SENS_TIMES=1: 64
+          </set>
+          &commonCompilerOptions;
+      </compiler_options>
+  </execution>
+
+  <execution>
+      <name>amortizing5</name>
+      <type>tbb</type>
+      <benchmarks>parNoMalloc</benchmarks>
+      <datasets>5</datasets>
+      <compiler_options>
+          <set>BF-LS-x100K-C1: -D __TBB_LAZY_BF_EXECUTION  -D SIMPLE_PARTITIONER -D TIMES=100000 -D CUTOFF -D CUTOFF_LEVEL=1</set>
+          <set>
+              2thx1: -D SENS_TIMES=1: 2,
+             64thx1: -D SENS_TIMES=1: 64
+          </set>
+          &commonCompilerOptions;
+      </compiler_options>
+  </execution>
+
+  <execution>
+      <name>amortizing6</name>
+      <type>tbb</type>
+      <benchmarks>parNoMalloc</benchmarks>
+      <datasets>6</datasets>
+      <compiler_options>
+          <set>BF-LS-x20K-C1: -D __TBB_LAZY_BF_EXECUTION  -D SIMPLE_PARTITIONER -D TIMES=20000 -D CUTOFF -D CUTOFF_LEVEL=1</set>
+          <set>
+              2thx2: -D SENS_TIMES=2: 2,
+             64thx2: -D SENS_TIMES=2: 64
+          </set>
+          &commonCompilerOptions;
+      </compiler_options>
+  </execution>
+
+

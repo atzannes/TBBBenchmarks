@@ -1,0 +1,115 @@
+<?xml version="1.0"?>
+<!DOCTYPE benchmark [
+          <!ENTITY partitionerOptions    SYSTEM "../partitionerOptions.xml">
+          <!ENTITY scalingOptions        SYSTEM "../scalingOptions.xml">
+          <!ENTITY commonCompilerOptions SYSTEM "../commonCompilerOptions.xml">
+]>
+
+<benchmark_set>
+    <benchmark_name>Integer Convolution</benchmark_name>
+    <dataset>
+        <name>64</name>
+        <hfile>64/conv_int.h</hfile>
+        <xbofile>64/conv_int.o </xbofile>
+        <validhexfile>64/valid64image2.hex</validhexfile>
+    </dataset>
+    
+    <dataset>
+        <name>128</name>
+        <hfile>128/conv_int.h</hfile>
+        <xbofile>128/conv_int.o</xbofile>
+        <validhexfile>128/valid128image2.hex</validhexfile>
+    </dataset> 
+
+    <dataset>
+        <name>1024</name>
+        <hfile>1024/conv_int.h</hfile>
+        <xbofile>1024/conv_int.o</xbofile>
+        <validhexfile>1024/valid1024image2.hex</validhexfile>
+    </dataset> 
+
+    <dataset>
+        <name>2048</name>
+        <hfile>2048/conv_int.h</hfile>
+        <xbofile>2048/conv_int.o</xbofile>
+        <validhexfile>2048/valid2048image2.hex</validhexfile>
+    </dataset> 
+
+    <dataset>
+        <name>4096</name>
+        <hfile>4096/conv_int.h</hfile>
+        <xbofile>4096/conv_int.o</xbofile>
+        <validhexfile>4096/valid4096image2.hex</validhexfile>
+    </dataset> 
+
+  <benchmark>
+      <name>ser</name>
+      <filename>ser_conv_int.c ../xboutils/xboutils.o</filename>a
+      <dumpvar>result.hex</dumpvar>
+  </benchmark>
+
+  <benchmark>
+      <name>par</name>
+      <filename>conv_int.cpp  ../xboutils/xboutils.o</filename>
+      <dumpvar>result.hex</dumpvar>
+  </benchmark>
+
+  <execution>
+      <name>par</name>
+      <type>tbb</type> 
+      <benchmarks>par</benchmarks>
+      <datasets>4096</datasets>
+      <compiler_options>
+          &commonCompilerOptions;
+          &partitionerOptions;
+          &scalingOptions;
+      </compiler_options>
+  </execution>
+
+  <execution>
+      <name>parLBS</name>
+      <type>tbb</type> 
+      <benchmarks>par</benchmarks>
+      <datasets>4096</datasets>
+      <compiler_options>
+          <set>LazySP-T2: -D __TBB_LAZY_EXECUTION  -D SIMPLE_PARTITIONER -D DEQUE_THRESH=2</set>
+          &commonCompilerOptions;
+          &scalingOptions;
+      </compiler_options>
+  </execution>
+
+  <execution>
+      <name>ser</name>
+      <type>tbb</type> 
+      <benchmarks>ser</benchmarks>
+      <datasets>4096</datasets>
+      <compiler_options>
+          &commonCompilerOptions;
+      </compiler_options>
+  </execution>
+
+  <execution>
+      <name>TestSer</name>
+      <type>tbb</type> 
+      <benchmarks>ser</benchmarks>
+      <datasets>64,128,1024,2048,4096</datasets>
+      <compiler_options>
+          &commonCompilerOptions;
+      </compiler_options>
+  </execution>
+
+  <execution>
+      <name>TestPar</name>
+      <type>tbb</type> 
+      <benchmarks>par</benchmarks>
+      <datasets>64,128,1024,2048,4096</datasets>
+      <compiler_options>
+          &commonCompilerOptions;
+          &partitionerOptions;
+      </compiler_options>
+  </execution>
+
+<runnable>par</runnable>
+
+  
+</benchmark_set>

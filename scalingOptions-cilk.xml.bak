@@ -1,0 +1,59 @@
+<!-- Greeshma
+<set>
+    1th: : -cilk_set_worker_count=1,
+    2th: : -cilk_set_worker_count=2,
+    4th: : -cilk_set_worker_count=4,
+    6th: : -cilk_set_worker_count=6,
+    8th: : -cilk_set_worker_count=8,
+</set>-->
+
+<!-- Buzz 
+<set>
+    1th: : -cilk_set_worker_count=1,
+    2th: : -cilk_set_worker_count=2,
+    4th: : -cilk_set_worker_count=4,
+    6th: : -cilk_set_worker_count=6,
+    8th: : -cilk_set_worker_count=8,
+   12th: : -cilk_set_worker_count=12,
+   16th: : -cilk_set_worker_count=16,
+   18th: : -cilk_set_worker_count=18,
+   22th: : -cilk_set_worker_count=22,
+   24th: : -cilk_set_worker_count=24,
+</set> 
+-->
+<!-- Buzz  half
+<set>
+    4th: : -cilk_set_worker_count=4,
+    8th: : -cilk_set_worker_count=8,
+   12th: : -cilk_set_worker_count=12,
+   16th: : -cilk_set_worker_count=16,
+   20th: : -cilk_set_worker_count=20,
+   24th: : -cilk_set_worker_count=24
+</set> 
+-->
+<!-- Tiny Buzz  
+<set>
+    6th: : -cilk_set_worker_count=6,
+   24th: : -cilk_set_worker_count=24,
+</set> 
+-->
+<!-- t2
+<set>
+    1th: : -cilk_set_worker_count=1,
+    2th: : -cilk_set_worker_count=2,
+    4th: : -cilk_set_worker_count=4,
+    6th: : -cilk_set_worker_count=6,
+    8th: : -cilk_set_worker_count=8,
+   12th: : -cilk_set_worker_count=12,
+   16th: : -cilk_set_worker_count=16,
+   18th: : -cilk_set_worker_count=18,
+   22th: : -cilk_set_worker_count=22,
+   24th: : -cilk_set_worker_count=24,
+   
+   32th: : -cilk_set_worker_count=32,
+   40th: : -cilk_set_worker_count=40,
+   48th: : -cilk_set_worker_count=48,
+   56th: : -cilk_set_worker_count=56,
+   64th: : -cilk_set_worker_count=64
+</set>
+-->

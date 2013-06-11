@@ -1,0 +1,169 @@
+<?xml version="1.0"?>
+<!DOCTYPE benchmark [
+          <!ENTITY partitionerOptions    SYSTEM "../partitionerOptions.xml">
+          <!ENTITY scalingOptions        SYSTEM "../scalingOptions.xml">
+          <!ENTITY commonCompilerOptions SYSTEM "../commonCompilerOptions.xml">
+]>
+
+<benchmark_set>
+    <benchmark_name>matmult</benchmark_name>
+
+    <dataset>
+        <name>4</name>
+        <hfile>4/mat.h</hfile>
+        <xbofile></xbofile>
+        <validhexfile></validhexfile>
+    </dataset>
+
+    <dataset>
+        <name>64</name>
+        <hfile>64/mat.h</hfile>
+        <xbofile>64/mat.o</xbofile>
+        <validhexfile>64/valid64Z.hex</validhexfile>
+    </dataset>
+
+    <dataset>
+        <name>256</name>
+        <hfile>256/mat.h</hfile>
+        <xbofile>256/mat.o</xbofile>
+        <validhexfile>256/valid256Z.hex</validhexfile>
+    </dataset>
+
+    <dataset>
+        <name>512</name>
+        <hfile>512/mat.h</hfile>
+        <xbofile>512/mat.o</xbofile>
+        <validhexfile>512/valid512Z.hex</validhexfile>
+    </dataset>
+
+    <dataset>
+        <name>1024</name>
+        <hfile>1024/mat.h</hfile>
+        <xbofile>1024/mat.o</xbofile>
+        <validhexfile>1024/valid1024Z.hex</validhexfile>
+    </dataset>
+
+    <dataset>
+        <name>1024CO</name>
+        <xbofile>-D SIZE=1024</xbofile>
+    </dataset>
+
+    <dataset>
+        <name>2KCO</name>
+        <xbofile>-D SIZE=2048</xbofile>
+    </dataset>
+
+    <dataset>
+        <name>4KCO</name>
+        <xbofile>-D SIZE=4096</xbofile>
+    </dataset>
+
+    <!-- Cache Oblivious Versions -->
+    <benchmark>
+        <name>serCO</name>
+        <filename>cacheobliviousMM.cpp -D SERIAL</filename>
+    </benchmark>
+
+    <benchmark>
+        <name>parCO</name>
+        <filename>cacheobliviousMM.cpp </filename>
+    </benchmark>
+
+    <benchmark>
+        <name>ser</name>
+        <filename>ser_matmult.c ../xboutils/xboutils.o</filename>
+        <dumpvar>result.hex</dumpvar>
+    </benchmark>
+
+    <benchmark>
+        <name>par</name>
+        <filename>matmult.cpp ../xboutils/xboutils.o</filename>
+        <dumpvar>result.hex</dumpvar>
+    </benchmark>
+
+    <benchmark>
+        <name>parXBO</name>
+        <filename>matmultXBO.cpp ../xboutils/xboutils.o</filename>
+        <dumpvar></dumpvar>
+    </benchmark>
+
+    <execution>
+        <name>parCO</name>
+        <type>tbb</type>
+        <benchmarks>parCO</benchmarks>
+        <datasets>2KCO</datasets>
+        <compiler_options>
+            &commonCompilerOptions;
+            &scalingOptions;
+        </compiler_options>
+    </execution>
+
+    <execution>
+        <name>par</name>
+        <type>tbb</type>
+        <benchmarks>par</benchmarks>
+        <datasets>1024</datasets>
+        <compiler_options>
+            &commonCompilerOptions;
+            &partitionerOptions;
+            &scalingOptions;
+        </compiler_options>
+    </execution>
+
+    <execution>
+        <name>parLBS</name>
+        <type>tbb</type>
+        <benchmarks>par</benchmarks>
+        <datasets>1024</datasets>
+        <compiler_options>
+            <set>LazySP-T2: -D __TBB_LAZY_EXECUTION  -D SIMPLE_PARTITIONER -D DEQUE_THRESH=2</set>
+            &commonCompilerOptions;
+            &scalingOptions;
+        </compiler_options>
+    </execution>
+
+    <execution>
+        <name>parXBO</name>
+        <type>tbb</type>
+        <benchmarks>parXBO</benchmarks>
+        <datasets>4</datasets>
+        <compiler_options>
+            &commonCompilerOptions;
+            &partitionerOptions;
+        </compiler_options>
+    </execution>
+
+    <execution>
+        <name>ser</name>
+        <type>tbb</type>
+        <benchmarks>ser</benchmarks>
+        <datasets>1024</datasets>
+        <compiler_options>
+            &commonCompilerOptions;
+        </compiler_options>
+    </execution>
+
+    <execution>
+        <name>TestSer</name>
+        <type>tbb</type>
+        <benchmarks>ser</benchmarks>
+        <datasets>64,256,512,1024</datasets>
+        <compiler_options>
+            &commonCompilerOptions;
+        </compiler_options>
+    </execution>
+
+    <execution>
+        <name>TestPar</name>
+        <type>tbb</type>
+        <benchmarks>par</benchmarks>
+        <datasets>64,256,512,1024</datasets>
+        <compiler_options>
+            &commonCompilerOptions;
+            &partitionerOptions;
+        </compiler_options>
+    </execution>
+
+    <runnable>par</runnable>
+
+</benchmark_set>

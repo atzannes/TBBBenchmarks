@@ -1,0 +1,23 @@
+<!-- All Combinations 
+<set>
+    lazy-df:  -D __TBB_LAZY_DF_EXECUTION,
+    lazy-bf:  -D __TBB_LAZY_BF_EXECUTION,
+    eager: -D __TBB_EAGER_EXECUTION
+</set>
+<set>
+    SP:     -D SIMPLE_PARTITIONER,
+    AutoP: -D AUTO_PARTITIONER,
+    AffP:  -D AFFINITY_PARTITIONER
+</set>
+-->
+
+<!-- Short List
+<set>
+    LazyDF-T2: -D __TBB_LAZY_DF_EXECUTION  -D SIMPLE_PARTITIONER -D DEQUE_THRESH=2,
+    LazyDF:    -D __TBB_LAZY_DF_EXECUTION  -D SIMPLE_PARTITIONER,
+    LazyBF:    -D __TBB_LAZY_BF_EXECUTION  -D SIMPLE_PARTITIONER,
+    LazyDFAutoP: -D __TBB_LAZY_DF_EXECUTION  -D AUTO_PARTITIONER,
+    EAutoP: -D AUTO_PARTITIONER,
+    EAffP:  -D AFFINITY_PARTITIONER
+</set>
+-->

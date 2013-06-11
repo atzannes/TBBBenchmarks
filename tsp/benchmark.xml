@@ -1,0 +1,450 @@
+<?xml version="1.0"?>
+<!DOCTYPE benchmark [
+          <!ENTITY partitionerOptions    SYSTEM "../partitionerOptions.xml">
+          <!ENTITY scalingOptions        SYSTEM "../scalingOptions.xml">
+          <!ENTITY commonCompilerOptions SYSTEM "../commonCompilerOptions.xml">
+          <!ENTITY amortizingCutOff      SYSTEM "./amortizing.xml">
+]>
+
+<!-- TSP has many versions:
+     Initially we had a parallel TSP with a globally best-found-solution-so-far 
+     which was updated using a lock. This bfssf was used to trim computation 
+     paths that exceeded it. This option is indicated by "partweightcutoff" and
+     -D PARTIAL_WEIGHT_CUTOFF.
+     Then we also tried an option without locking (each TCU has its private 
+     bfssf) but this was slower when combined with partweightcutoff. This
+     is indicated by "noLocks" and -D NO_LOCKS.
+     Then we added a cut-off based on the depth of the recursion because this 
+     is how an expert programmer might program TSP. This is indicated by
+     "cutOff" and  -D CUTOFF -D CUTOFF_LEVEL=(N/2)
+     Then we found that it wasn't fair to use the partweightcutoff to compare
+     different parallel approaches because depending on the domain 
+     decomposition (splitting) one approach might end doing less computation
+     by luck. So we disabled partweightcutoff, which also removed the need for
+     locking. So the configuration we used was  NSppopp-cutOff-noLocks
+     
+-->
+
+<benchmark_set>
+    <benchmark_name>TSP (Travelling Salesman Problem)</benchmark_name>
+
+    <dataset>
+        <name>4</name>
+        <hfile>4/tsp.h</hfile>
+        <xbofile>-D SIZE=4  4/tsp.c</xbofile>
+        <validhexfile>4/valid4solution_weight.hex</validhexfile>
+    </dataset>
+
+    <dataset>
+        <name>5</name>
+        <hfile>5/tsp.h</hfile>
+        <xbofile>-D SIZE=5  5/tsp.c</xbofile>
+        <validhexfile>5/valid5solution_weight.hex</validhexfile>
+    </dataset>
+
+    <dataset>
+        <name>6</name>
+        <hfile>6/tsp.h</hfile>
+        <xbofile>-D SIZE=6  6/tsp.c</xbofile>
+        <validhexfile>6/valid6solution_weight.hex</validhexfile>
+    </dataset>
+
+    <dataset>
+        <name>7</name>
+        <hfile>7/tsp.h</hfile>
+        <xbofile>-D SIZE=7  7/tsp.c</xbofile>
+        <validhexfile>7/valid7solution_weight.hex</validhexfile>
+    </dataset>
+
+    <dataset>
+        <name>8</name>
+        <hfile>8/tsp.h</hfile>
+        <xbofile>-D SIZE=8  8/tsp.c</xbofile>
+        <validhexfile>8/valid8solution_weight.hex</validhexfile>
+    </dataset>
+
+    <dataset>
+        <name>9</name>
+        <hfile>9/tsp.h</hfile>
+        <xbofile>-D SIZE=9 9/tsp.c</xbofile>
+        <validhexfile>9/valid9solution_weight.hex</validhexfile>
+    </dataset>
+
+    <dataset>
+        <name>10</name>
+        <hfile>10/tsp.h</hfile>
+        <xbofile>-D SIZE=10 10/tsp.c</xbofile>
+        <validhexfile>10/valid10solution_weight.hex</validhexfile>
+    </dataset>
+
+    <dataset>
+        <name>11</name>
+        <hfile>11/tsp.h</hfile>
+        <xbofile>-D SIZE=11 11/tsp.c</xbofile>
+        <validhexfile>11/valid11solution_weight.hex</validhexfile>
+    </dataset>
+
+    <dataset>
+        <name>12</name>
+        <hfile>12/tsp.h</hfile>
+        <xbofile>-D SIZE=12 12/tsp.c</xbofile>
+        <validhexfile>12/valid12solution_weight.hex</validhexfile>
+    </dataset>
+
+    <dataset>
+        <name>13</name>
+        <hfile>13/tsp.h</hfile>
+        <xbofile>-D SIZE=13 13/tsp.c</xbofile>
+        <validhexfile>13/valid13solution_weight.hex</validhexfile>
+    </dataset>
+    
+    <dataset>
+        <name>14</name>
+        <hfile>16/tsp.h</hfile>
+        <xbofile>-D SIZE=14 16/tsp.c</xbofile>
+        <validhexfile></validhexfile>
+    </dataset>
+
+    <dataset>
+        <name>16</name>
+        <hfile>16/tsp.h</hfile>
+        <xbofile>-D SIZE=16 16/tsp.c</xbofile>
+        <validhexfile></validhexfile>
+    </dataset>
+    
+  <benchmark>
+      <name>ser</name>
+      <filename>ser_tsp.c ../xboutils/xboutils.o</filename>
+      <dumpvar>result.hex</dumpvar>
+  </benchmark>
+  
+  <benchmark>
+      <name>par</name>
+      <filename>tsp.cpp ../xboutils/xboutils.o</filename>
+      <dumpvar>result.hex</dumpvar>
+  </benchmark>
+  
+  <benchmark>
+      <name>parOpt</name>
+      <filename>tsp_opt.cpp -D NO_LOCKS ../xboutils/xboutils.o</filename>
+      <dumpvar>result.hex</dumpvar>
+  </benchmark>
+  
+  <benchmark>
+      <name>parMeld</name>
+      <filename>tsp_opt_meld.cpp -D NO_LOCKS ../xboutils/xboutils.o -D _TBB_MELD</filename>
+      <dumpvar>result.hex</dumpvar>
+  </benchmark>
+  
+  <benchmark>
+      <name>parOptCut</name>
+      <filename>tsp_opt.cpp -D NO_LOCKS -D CUTOFF ../xboutils/xboutils.o</filename>
+      <dumpvar>result.hex</dumpvar>
+  </benchmark>
+  
+  <benchmark>
+      <name>parOptCutNm4</name>
+      <filename>tsp_opt.cpp -D NO_LOCKS -D CUTOFF -D CUTOFF_LEVEL=(SIZE-4) ../xboutils/xboutils.o</filename>
+      <dumpvar>result.hex</dumpvar>
+  </benchmark>
+  
+  <benchmark>
+      <name>parOptCutNm5</name>
+      <filename>tsp_opt.cpp -D NO_LOCKS -D CUTOFF -D CUTOFF_LEVEL=(SIZE-5) ../xboutils/xboutils.o</filename>
+      <dumpvar>result.hex</dumpvar>
+  </benchmark>
+  
+  <benchmark>
+      <name>parOptLocks</name>
+      <filename>tsp_opt.cpp ../xboutils/xboutils.o</filename>
+      <dumpvar>result.hex</dumpvar>
+  </benchmark>
+  
+  <execution>
+      <name>sens4</name>
+      <type>tbb</type>
+      <benchmarks>parOpt</benchmarks>
+      <datasets>4</datasets>
+      <compiler_options>
+          &commonCompilerOptions;
+          <set>CNm4:-D CUTOFF_LEVEL=(SIZE-4),
+               CNm2:-D CUTOFF_LEVEL=(SIZE-2)</set>
+          &partitionerOptions;
+          &scalingOptions;
+      </compiler_options>
+  </execution>
+
+  <execution>
+      <name>sens6</name>
+      <type>tbb</type>
+      <benchmarks>parOpt</benchmarks>
+      <datasets>6</datasets>
+      <compiler_options>
+          &commonCompilerOptions;
+          <set>CNm6:-D CUTOFF_LEVEL=(SIZE-6),
+               CNm4:-D CUTOFF_LEVEL=(SIZE-4),
+               CNm2:-D CUTOFF_LEVEL=(SIZE-2)</set>
+          &partitionerOptions;
+          &scalingOptions;
+      </compiler_options>
+  </execution>
+
+  <execution>
+      <name>sens8</name>
+      <type>tbb</type>
+      <benchmarks>parOpt</benchmarks>
+      <datasets>8</datasets>
+      <compiler_options>
+          &commonCompilerOptions;
+          <set>CNm8:-D CUTOFF_LEVEL=(SIZE-8),
+               CNm6:-D CUTOFF_LEVEL=(SIZE-6),
+               CNm4:-D CUTOFF_LEVEL=(SIZE-4),
+               CNm2:-D CUTOFF_LEVEL=(SIZE-2)</set>
+          &partitionerOptions;
+          &scalingOptions;
+      </compiler_options>
+  </execution>
+
+  <execution>
+      <name>sens10</name>
+      <type>tbb</type>
+      <benchmarks>parOpt</benchmarks>
+      <datasets>10</datasets>
+      <compiler_options>
+          &commonCompilerOptions;
+          <set>CNm10:-D CUTOFF_LEVEL=(SIZE-10),
+               CNm8:-D CUTOFF_LEVEL=(SIZE-8),
+               CNm6:-D CUTOFF_LEVEL=(SIZE-6),
+               CNm4:-D CUTOFF_LEVEL=(SIZE-4),
+               CNm2:-D CUTOFF_LEVEL=(SIZE-2)</set>
+          &partitionerOptions;
+          &scalingOptions;
+      </compiler_options>
+  </execution>
+
+  <execution>
+      <name>sens12</name>
+      <type>tbb</type>
+      <benchmarks>parOpt</benchmarks>
+      <datasets>12</datasets>
+      <compiler_options>
+          &commonCompilerOptions;
+          <set>CNm12:-D CUTOFF_LEVEL=(SIZE-12),
+               CNm10:-D CUTOFF_LEVEL=(SIZE-10),
+               CNm8:-D CUTOFF_LEVEL=(SIZE-8),
+               CNm6:-D CUTOFF_LEVEL=(SIZE-6),
+               CNm4:-D CUTOFF_LEVEL=(SIZE-4),
+               CNm2:-D CUTOFF_LEVEL=(SIZE-2)</set>
+          &partitionerOptions;
+          &scalingOptions;
+      </compiler_options>
+  </execution>
+
+  <runnable>sens4, sens6, sens8, sens10, sens12</runnable>
+
+  <execution>
+      <name>par</name>
+      <type>tbb</type>
+      <!--<benchmarks>parOpt, parOptCut, parOptCutNm4</benchmarks>-->
+      <benchmarks>parOpt, parOptCut, parOptCutNm4</benchmarks>
+      <datasets>12</datasets>
+      <compiler_options>
+          <set>x3: -D TIMES=3</set>
+          &commonCompilerOptions;
+          &partitionerOptions;
+          &scalingOptions;
+      </compiler_options>
+  </execution>
+
+  <execution>
+      <name>parOptCutOffNm4</name>
+      <type>tbb</type>
+      <benchmarks>parOptCut</benchmarks>
+      <datasets>12</datasets>
+      <compiler_options>
+          &commonCompilerOptions;
+          <set>CNm4:-D CUTOFF_LEVEL=(SIZE-4)</set>
+          &partitionerOptions;
+          &scalingOptions;
+      </compiler_options>
+  </execution>
+
+
+  <execution>
+      <name>parOptCutNm4</name>
+      <type>tbb</type>
+      <benchmarks>parOptCutNm4</benchmarks>
+      <datasets>12</datasets>
+      <compiler_options>
+          <set>x3: -D TIMES=3</set>
+          &commonCompilerOptions;
+          &partitionerOptions;
+          &scalingOptions;
+      </compiler_options>
+  </execution>
+
+  <execution>
+      <name>parOptAmortizedT2Buzz</name>
+      <type>tbb</type>
+      <benchmarks>parOptCutNm5</benchmarks>
+      <datasets>12</datasets>
+      <compiler_options>
+          <set>x3: -D TIMES=3</set>
+          &commonCompilerOptions;
+          <set>
+              LazyBF: -D __TBB_LAZY_BF_EXECUTION  -D SIMPLE_PARTITIONER,
+              LazyDF2-LS: -D __TBB_LAZY_DF_EXECUTION  -D SIMPLE_PARTITIONER -D DEQUE_THRESH=2,
+              LazyDF: -D __TBB_LAZY_DF_EXECUTION  -D SIMPLE_PARTITIONER,
+              EAutoP: -D AUTO_PARTITIONER
+          </set>
+      </compiler_options>
+  </execution>
+
+  <execution>
+      <name>parOptAmortizedGreeshma</name>
+      <type>tbb</type>
+      <benchmarks>parOptCutNm4</benchmarks>
+      <datasets>12</datasets>
+      <compiler_options>
+          &commonCompilerOptions;
+          <set>
+              LazyBF: -D __TBB_LAZY_BF_EXECUTION  -D SIMPLE_PARTITIONER,
+              LazyDF2-LS: -D __TBB_LAZY_DF_EXECUTION  -D SIMPLE_PARTITIONER -D DEQUE_THRESH=2,
+              LazyDF: -D __TBB_LAZY_DF_EXECUTION  -D SIMPLE_PARTITIONER,
+              EAutoP: -D AUTO_PARTITIONER
+          </set>
+      </compiler_options>
+  </execution>
+
+  <execution>
+      <name>parOptCutOff</name>
+      <type>tbb</type>
+      <benchmarks>parOptCut</benchmarks>
+      <datasets>12</datasets>
+      <compiler_options>
+          &commonCompilerOptions;
+          &scalingOptions;
+          &partitionerOptions;
+          <set> C2:-D CUTOFF_LEVEL=2,
+                C4:-D CUTOFF_LEVEL=4,
+                C6:-D CUTOFF_LEVEL=6,
+                C8:-D CUTOFF_LEVEL=8,
+               C10:-D CUTOFF_LEVEL=10,
+               C12:-D CUTOFF_LEVEL=12,
+               C14:-D CUTOFF_LEVEL=14
+          </set>
+      </compiler_options>
+  </execution>
+
+  <execution>
+      <name>parMeld</name>
+      <type>tbb</type>
+      <benchmarks>parOpt, parMeld</benchmarks>
+      <datasets>11</datasets>
+      <compiler_options>
+          &commonCompilerOptions;
+          &partitionerOptions;
+          <!--&scalingOptions;-->
+      </compiler_options>
+  </execution>
+
+  <execution>
+      <name>parNoCutOff</name>
+      <type>tbb</type>
+      <benchmarks>parOpt,parOptLocks,par</benchmarks>
+      <datasets>12</datasets>
+      <compiler_options>
+          &commonCompilerOptions;
+          &partitionerOptions;
+          &scalingOptions;
+      </compiler_options>
+  </execution>
+
+  <execution>
+      <name>parCutOff</name>
+      <type>tbb</type>
+      <benchmarks>parOpt,parOptLocks,par</benchmarks>
+      <datasets>12</datasets>
+      <compiler_options>
+          <set>cutOff: -D CUTOFF</set>
+          &commonCompilerOptions;
+          &partitionerOptions;
+          &scalingOptions;
+      </compiler_options>
+  </execution>
+
+  <execution>
+      <name>parNoCutOffLBS</name>
+      <type>tbb</type>
+      <benchmarks>parOpt</benchmarks>
+      <datasets>12</datasets>
+      <compiler_options>
+          <set>LazySP-T2: -D __TBB_LAZY_EXECUTION  -D SIMPLE_PARTITIONER -D DEQUE_THRESH=2,
+               LazySP-T1: -D __TBB_LAZY_EXECUTION  -D SIMPLE_PARTITIONER,
+               LazySP-T1-D1:-D __TBB_LAZY_EXECUTION  -D SIMPLE_PARTITIONER -D LBS_SPLIT_DELAY=1,
+               LazySP-T1-D2:-D __TBB_LAZY_EXECUTION  -D SIMPLE_PARTITIONER -D LBS_SPLIT_DELAY=2,
+               LazySP-T1-D4:-D __TBB_LAZY_EXECUTION  -D SIMPLE_PARTITIONER -D LBS_SPLIT_DELAY=4,
+               LazySP-T1-D25:-D __TBB_LAZY_EXECUTION  -D SIMPLE_PARTITIONER -D LBS_SPLIT_DELAY=25
+          </set>
+
+          &commonCompilerOptions;
+          &scalingOptions;
+      </compiler_options>
+  </execution>
+
+  <execution>
+      <name>parCutOffLBS</name>
+      <type>tbb</type>
+      <benchmarks>parOpt</benchmarks>
+      <datasets>12</datasets>
+      <compiler_options>
+          <set>cutOff:-D CUTOFF</set>
+          <set>LazySP-T2: -D __TBB_LAZY_EXECUTION  -D SIMPLE_PARTITIONER -D DEQUE_THRESH=2,
+               LazySP-T1: -D __TBB_LAZY_EXECUTION  -D SIMPLE_PARTITIONER,
+               LazySP-T1-D1:-D __TBB_LAZY_EXECUTION  -D SIMPLE_PARTITIONER -D LBS_SPLIT_DELAY=1,
+               LazySP-T1-D2:-D __TBB_LAZY_EXECUTION  -D SIMPLE_PARTITIONER -D LBS_SPLIT_DELAY=2,
+               LazySP-T1-D4:-D __TBB_LAZY_EXECUTION  -D SIMPLE_PARTITIONER -D LBS_SPLIT_DELAY=4,
+               LazySP-T1-D25:-D __TBB_LAZY_EXECUTION  -D SIMPLE_PARTITIONER -D LBS_SPLIT_DELAY=25
+          </set>
+          &commonCompilerOptions;
+          &scalingOptions;
+      </compiler_options>
+  </execution>
+
+  <execution>
+      <name>ser</name>
+      <type>tbb</type>
+      <benchmarks>ser</benchmarks>
+      <datasets>12</datasets>
+      <compiler_options>
+          <set>x3: -D TIMES=3</set>
+          &commonCompilerOptions;
+      </compiler_options>
+  </execution>
+
+  <execution>
+      <name>TestSer</name>
+      <type>tbb</type>
+      <benchmarks>ser</benchmarks>
+      <datasets>9,10,11,12,13</datasets>
+      <compiler_options>
+          &commonCompilerOptions;
+      </compiler_options>
+  </execution>
+
+  <execution>
+      <name>TestPar</name>
+      <type>tbb</type>
+      <benchmarks>par, parOpt, parOptCut, parOptLocks</benchmarks>
+      <datasets>11</datasets>
+      <!--<datasets>12</datasets>-->
+      <compiler_options>
+          <!--<set>debug:-D TBB_USE_DEBUG=1</set>-->
+          &commonCompilerOptions;
+          &partitionerOptions;
+      </compiler_options>
+  </execution>
+
+
+  &amortizingCutOff;
+</benchmark_set>

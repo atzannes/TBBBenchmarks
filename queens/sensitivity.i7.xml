@@ -1,0 +1,194 @@
+  <execution>
+      <name>sens4buzz</name>
+      <type>tbb</type>
+      <benchmarks>parNoMalloc</benchmarks>
+      <datasets>4</datasets>
+      <compiler_options>
+          <set>EAutoP-x100K: -D AUTO_PARTITIONER -D TIMES=100000</set>
+          <set>
+              1thx4: -D SENS_TIMES=4: 1,
+              4thx1: -D SENS_TIMES=1: 4,
+              8thx1: -D SENS_TIMES=1: 8,
+             12thx1: -D SENS_TIMES=1: 12,
+             16thx1: -D SENS_TIMES=1: 16,
+             20thx1: -D SENS_TIMES=1: 20,
+             24thx1: -D SENS_TIMES=1: 24
+          </set>
+          <set>
+                C2: -D CUTOFF -D CUTOFF_LEVEL=2,
+                NC4:
+          </set>
+          &commonCompilerOptions;
+      </compiler_options>
+  </execution>
+
+  <execution>
+      <name>sens6buzz</name>
+      <type>tbb</type>
+      <benchmarks>parNoMalloc</benchmarks>
+      <datasets>6</datasets>
+      <compiler_options>
+          <set>EAutoP-x50K: -D AUTO_PARTITIONER -D TIMES=50000</set>
+          <set>
+              1thx4: -D SENS_TIMES=4: 1,
+              4thx1: -D SENS_TIMES=1: 4,
+              8thx1: -D SENS_TIMES=1: 8,
+             12thx1: -D SENS_TIMES=1: 12,
+             16thx1: -D SENS_TIMES=1: 16,
+             20thx1: -D SENS_TIMES=1: 20,
+             24thx1: -D SENS_TIMES=1: 24
+          </set>
+          <set>
+                C2: -D CUTOFF -D CUTOFF_LEVEL=2,
+                C4: -D CUTOFF -D CUTOFF_LEVEL=4,
+                NC6:
+          </set>
+          &commonCompilerOptions;
+      </compiler_options>
+  </execution>
+
+  <execution>
+      <name>sens8buzz</name>
+      <type>tbb</type>
+      <benchmarks>parNoMalloc</benchmarks>
+      <datasets>8</datasets>
+      <compiler_options>
+          <set>EAutoP-x10K: -D AUTO_PARTITIONER -D TIMES=10000</set>
+          <set>
+              1thx4: -D SENS_TIMES=4: 1,
+              4thx1: -D SENS_TIMES=1: 4,
+              8thx1: -D SENS_TIMES=1: 8,
+             12thx1: -D SENS_TIMES=1: 12,
+             16thx1: -D SENS_TIMES=1: 16,
+             20thx1: -D SENS_TIMES=1: 20,
+             24thx1: -D SENS_TIMES=1: 24
+          </set>
+          <set>
+                C2: -D CUTOFF -D CUTOFF_LEVEL=2,
+                C4: -D CUTOFF -D CUTOFF_LEVEL=4,
+                C6: -D CUTOFF -D CUTOFF_LEVEL=6,
+                NC8:
+          </set>
+          &commonCompilerOptions;
+      </compiler_options>
+  </execution>
+
+  <execution>
+      <name>sens10buzz</name>
+      <type>tbb</type>
+      <benchmarks>parNoMalloc</benchmarks>
+      <datasets>10</datasets>
+      <compiler_options>
+          <set>EAutoP-x200: -D AUTO_PARTITIONER -D TIMES=200</set>
+          <set>
+              1thx1: -D SENS_TIMES=1: 1,
+              4thx4: -D SENS_TIMES=4: 4,
+              8thx8: -D SENS_TIMES=8: 8,
+             12thx12: -D SENS_TIMES=12: 12,
+             16thx16: -D SENS_TIMES=16: 16,
+             20thx20: -D SENS_TIMES=20: 20,
+             24thx24: -D SENS_TIMES=24: 24
+          </set>
+          <set>
+                C2: -D CUTOFF -D CUTOFF_LEVEL=2,
+                C4: -D CUTOFF -D CUTOFF_LEVEL=4,
+                C6: -D CUTOFF -D CUTOFF_LEVEL=6,
+                C8: -D CUTOFF -D CUTOFF_LEVEL=8,
+                NC10:
+          </set>
+          &commonCompilerOptions;
+      </compiler_options>
+  </execution>
+
+  <execution>
+      <name>sens12buzz</name>
+      <type>tbb</type>
+      <benchmarks>parNoMalloc</benchmarks>
+      <datasets>12</datasets>
+      <compiler_options>
+          <set>EAutoP-x100: -D AUTO_PARTITIONER -D TIMES=100</set>
+          <set>
+              1thx4: -D SENS_TIMES=4: 1,
+              4thx1: -D SENS_TIMES=1: 4,
+              8thx1: -D SENS_TIMES=1: 8,
+             12thx1: -D SENS_TIMES=1: 12,
+             16thx1: -D SENS_TIMES=1: 16,
+             20thx1: -D SENS_TIMES=1: 20,
+             24thx1: -D SENS_TIMES=1: 24
+          </set>
+          <set>
+                C2: -D CUTOFF -D CUTOFF_LEVEL=2,
+                C4: -D CUTOFF -D CUTOFF_LEVEL=4,
+                C6: -D CUTOFF -D CUTOFF_LEVEL=6,
+                C8: -D CUTOFF -D CUTOFF_LEVEL=8,
+                C10: -D CUTOFF -D CUTOFF_LEVEL=10,
+                NC12:
+          </set>
+          &commonCompilerOptions;
+      </compiler_options>
+  </execution>
+
+  <execution>
+      <name>sens14buzz</name>
+      <type>tbb</type>
+      <benchmarks>parNoMalloc</benchmarks>
+      <datasets>14</datasets>
+      <compiler_options>
+          <set>EAutoP-x1: -D AUTO_PARTITIONER -D TIMES=1</set>
+          <set>
+              1thx4: -D SENS_TIMES=4: 1,
+              4thx1: -D SENS_TIMES=1: 4,
+              8thx1: -D SENS_TIMES=1: 8,
+             12thx1: -D SENS_TIMES=1: 12,
+             16thx1: -D SENS_TIMES=1: 16,
+             20thx1: -D SENS_TIMES=1: 20,
+             24thx1: -D SENS_TIMES=1: 24
+          </set>
+          <set>
+                C2: -D CUTOFF -D CUTOFF_LEVEL=2,
+                C4: -D CUTOFF -D CUTOFF_LEVEL=4,
+                C6: -D CUTOFF -D CUTOFF_LEVEL=6,
+                C8: -D CUTOFF -D CUTOFF_LEVEL=8,
+                C10: -D CUTOFF -D CUTOFF_LEVEL=10,
+                C12: -D CUTOFF -D CUTOFF_LEVEL=12,
+                NC14:
+          </set>
+          &commonCompilerOptions;
+      </compiler_options>
+  </execution>
+
+  <execution>
+      <name>ser4buzz</name>
+      <type>tbb</type>
+      <benchmarks>serOpt</benchmarks>
+      <datasets>4</datasets>
+      <compiler_options>
+          <set>x150Kx4: -D TIMES=150000 -D SENS_TIMES=4</set>
+          &commonCompilerOptions;
+      </compiler_options>
+  </execution>
+
+  <execution>
+      <name>ser5i7</name>
+      <type>tbb</type>
+      <benchmarks>serOpt</benchmarks>
+      <datasets>5</datasets>
+      <compiler_options>
+          <set>x1Mx1: -D TIMES=1000000</set>
+          &commonCompilerOptions;
+      </compiler_options>
+  </execution>
+
+  <execution>
+      <name>ser6i7</name>
+      <type>tbb</type>
+      <benchmarks>serOpt</benchmarks>
+      <datasets>6</datasets>
+      <compiler_options>
+          <set>x200K: -D TIMES=200000</set>
+          &commonCompilerOptions;
+      </compiler_options>
+  </execution>
+
+
+

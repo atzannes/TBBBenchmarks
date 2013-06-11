@@ -1,0 +1,88 @@
+<?xml version="1.0"?>
+<!DOCTYPE benchmark [
+          <!ENTITY partitionerOptions SYSTEM "../partitionerOptions.xml">
+          <!ENTITY scalingOptions     SYSTEM "../scalingOptions.xml">
+]>
+
+<benchmark_set>
+    <benchmark_name>quicksort</benchmark_name>
+
+    <dataset>
+        <name>256</name>
+        <hfile>256/sort.h</hfile>
+        <xbofile>256/sort.o -D SIZE=256</xbofile>
+        <validhexfile></validhexfile>
+    </dataset> 
+
+    <dataset>
+        <name>8192</name>
+        <hfile>8192/sort.h</hfile>
+        <xbofile>8192/sort.o -D SIZE=8192</xbofile>
+        <validhexfile></validhexfile>
+    </dataset>
+    
+    <dataset>
+        <name>10k</name>
+        <hfile>10k/sort.h</hfile>
+        <xbofile>10k/sort.o -D SIZE=10000</xbofile>
+        <validhexfile></validhexfile>
+    </dataset>
+    
+    <dataset>
+        <name>100k</name>
+        <hfile>1M/sort.h</hfile>
+        <xbofile>1M/sort.o -D SIZE=100000</xbofile>
+        <validhexfile></validhexfile>
+    </dataset>
+    
+    <dataset>
+        <name>1M</name>
+        <hfile>1M/sort.h</hfile>
+        <xbofile>1M/sort.o -D SIZE=1000000</xbofile>
+        <validhexfile></validhexfile>
+    </dataset>
+    
+    <dataset>
+        <name>4M</name>
+        <hfile>4M/sort.h</hfile>
+        <xbofile>4M/sort.o -D SIZE=4194304</xbofile>
+        <validhexfile></validhexfile>
+    </dataset>
+    
+  <benchmark>
+      <name>ser</name>
+      <filename>quicksort_serial.c</filename>
+      <dumpvar></dumpvar>
+  </benchmark>
+  
+  <benchmark>
+      <name>par</name>
+      <filename>quicksort.cpp</filename>
+      <dumpvar></dumpvar>
+  </benchmark>
+  
+  <execution>
+      <name>par</name>
+      <type>tbb</type>
+      <benchmarks>par</benchmarks>
+      <datasets>1M, 4M</datasets>
+      <compiler_options>
+          <set>O3: -O3 -ltbb</set>
+          &partitionerOptions;
+          &scalingOptions;
+      </compiler_options>
+  </execution>
+
+  <execution>
+      <name>ser</name>
+      <type>tbb</type>
+      <benchmarks>ser</benchmarks>
+      <datasets>1M, 4M</datasets>
+      <compiler_options>
+          <set>O3: -ltbb -O3</set>
+      </compiler_options>
+  </execution>
+
+  <runnable>ser</runnable>
+  
+</benchmark_set>

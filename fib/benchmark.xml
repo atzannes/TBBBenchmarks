@@ -1,0 +1,36 @@
+<?xml version="1.0"?>
+<!DOCTYPE benchmark [
+          <!ENTITY partitionerOptions    SYSTEM "../partitionerOptions.xml">
+          <!ENTITY scalingOptions        SYSTEM "../scalingOptions.xml">
+          <!ENTITY commonCompilerOptions SYSTEM "../commonCompilerOptions.xml">
+]>
+
+<benchmark_set>
+    <benchmark_name>fib</benchmark_name>
+
+    <dataset>
+        <name>30</name>
+        <xbofile>-D NUMBER=30</xbofile>
+        <validhexfile></validhexfile>
+    </dataset>
+
+    <benchmark>
+        <name>par</name>
+        <filename>fib.cpp ../xboutils/xboutils.o</filename>
+        <dumpvar>result.hex</dumpvar>
+    </benchmark>
+
+    <execution>
+        <name>par</name>
+        <type>tbb</type>
+        <benchmarks>par</benchmarks>
+        <datasets>30</datasets>
+        <compiler_options>
+            &commonCompilerOptions;
+            &partitionerOptions;
+            &scalingOptions;
+        </compiler_options>
+    </execution>
+
+</benchmark_set>
+

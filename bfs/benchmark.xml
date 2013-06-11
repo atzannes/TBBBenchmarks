@@ -1,0 +1,241 @@
+<?xml version="1.0"?>
+<!DOCTYPE benchmark [
+          <!ENTITY partitionerOptions SYSTEM "../partitionerOptions.xml">
+          <!ENTITY scalingOptions     SYSTEM "../scalingOptions.xml">
+          <!ENTITY commonCompilerOptions SYSTEM "../commonCompilerOptions.xml">
+]>
+
+<benchmark_set>
+    <benchmark_name>bfs</benchmark_name>
+
+    <dataset>
+        <name>usroads0mm</name>
+        <xbofile>-D FILENAME="data/usroads/usroads.mtx" -D NSEPS=2 -D VSIZE=129164 -D ESIZE=330870 -D START=0</xbofile>
+        <validhexfile>data/usroads/validusroads.hex</validhexfile>
+    </dataset>
+    
+    <dataset>
+        <name>usroads0</name>
+        <xbofile>-D FILENAME="data/usroads/usroads.bin" -D VSIZE=129164 -D ESIZE=330870 -D START=0</xbofile>
+        <validhexfile>data/usroads/validusroads.hex</validhexfile>
+    </dataset>
+    
+    <dataset>
+        <name>road_usa0mm</name>
+        <xbofile>-D FILENAME="data/road_usa/road_usa.mtx" -D NSEPS=3 -D VSIZE=23947347 -D ESIZE=57708624 -D START=0</xbofile>
+        <validhexfile>data/road_usa/validroad_usa.hex</validhexfile>
+    </dataset>
+    
+    <dataset>
+        <name>road_usa0</name>
+        <xbofile>-D FILENAME="data/road_usa/road_usa.bin" -D VSIZE=23947347 -D ESIZE=57708624 -D START=0</xbofile>
+        <validhexfile>data/road_usa/validroad_usa.hex</validhexfile>
+    </dataset>
+    
+    <dataset>
+        <name>channel-500x100x100-b050</name>
+        <xbofile>-D FILENAME="data/channel-500x100x100-b050/channel-500x100x100-b050.mtx" -D NSEPS=3 -D VSIZE=4802000 -D ESIZE=85362744 -D START=0</xbofile>
+        <validhexfile>data/channel-500x100x100-b050/validchannel-500x100x100-b050.hex</validhexfile>
+    </dataset>
+    
+    <dataset>
+        <name>rgg_n_2_24_s0</name>
+        <xbofile>-D FILENAME="data/rgg_n_2_24_s0/rgg_n_2_24_s0.bin" -D VSIZE=16777216 -D ESIZE=265114400 -D START=0</xbofile>
+        <validhexfile>data/rgg_n_2_24_s0/validrgg_n_2_24_s0.hex</validhexfile>
+    </dataset>
+    
+    <dataset>
+        <name>gSparse0</name>
+        <hfile>data/gSparse/gSparse.h</hfile>
+        <xbofile>-D XBOFILE="data/gSparse/gSparse.xbo" -D START=0</xbofile>
+        <validhexfile>data/gSparse/validgSparse0level.hex</validhexfile>
+    </dataset>
+    
+    <dataset>
+        <name>gMed0</name>
+        <hfile>data/gMed/gMed.h</hfile>
+        <xbofile>-D XBOFILE="data/gMed/gMed.xbo" -D START=0</xbofile>
+        <validhexfile>data/gMed/validgMed0level.hex</validhexfile>
+    </dataset>
+    
+    <dataset>
+        <name>gDense0</name>
+        <hfile>data/gDense/gDense.h</hfile>
+        <xbofile>-D XBOFILE="data/gDense/gDense.xbo" -D START=0</xbofile>
+        <validhexfile>data/gDense/validgDense0level.hex</validhexfile>
+    </dataset>
+
+  <benchmark>
+      <name>ser</name>
+      <filename>serial_bfs.c ../xboutils/xboutils.o</filename>
+      <dumpvar>result.hex</dumpvar>
+  </benchmark>
+  
+  <benchmark>
+      <name>par</name>
+      <filename>bfs.cpp ../xboutils/xboutils.o</filename>
+      <dumpvar>result.hex</dumpvar>
+  </benchmark>
+  
+  <execution>
+      <name>par_rgg</name>
+      <type>tbb</type> 
+      <benchmarks>par</benchmarks>
+      <datasets>rgg_n_2_24_s0</datasets>
+      <compiler_options>
+          &commonCompilerOptions;
+          <set>x1: -D TIMES=1</set>
+          <set> : ,
+               ppt53: -D INNER_GRAINSIZE=53
+          </set>
+          &partitionerOptions;
+          &scalingOptions;
+      </compiler_options>
+  </execution>
+
+  <execution>
+      <name>par_rus</name>
+      <type>tbb</type> 
+      <benchmarks>par</benchmarks>
+      <datasets>road_usa0</datasets>
+      <compiler_options>
+          &commonCompilerOptions;
+          <set>x1: -D TIMES=1</set>
+          <set> : ,
+               ppt53: -D INNER_GRAINSIZE=53
+          </set>
+          &partitionerOptions;
+          &scalingOptions;
+      </compiler_options>
+  </execution>
+
+  <execution>
+      <name>par_usr</name>
+      <type>tbb</type> 
+      <benchmarks>par</benchmarks>
+      <datasets>usroads0</datasets>
+      <compiler_options>
+          &commonCompilerOptions;
+          <set>x1: -D TIMES=1</set>
+          <set> : ,
+               ppt53: -D INNER_GRAINSIZE=53
+          </set>
+          &partitionerOptions;
+          &scalingOptions;
+      </compiler_options>
+  </execution>
+
+  <execution>
+      <name>par</name>
+      <type>tbb</type> 
+      <benchmarks>par</benchmarks>
+      <datasets>gDense0</datasets>
+      <compiler_options>
+          &commonCompilerOptions;
+          <set>x1M: -D TIMES=1000000</set>
+          <set> : ,
+               ppt53: -D INNER_GRAINSIZE=53
+          </set>
+          &partitionerOptions;
+          &scalingOptions;
+      </compiler_options>
+  </execution>
+
+  <execution>
+      <name>parLBS</name>
+      <type>tbb</type> 
+      <benchmarks>par</benchmarks>
+      <datasets>gDense0</datasets>
+      <compiler_options>
+          &commonCompilerOptions;
+          <set>LazySP-T2: -D __TBB_LAZY_EXECUTION  -D SIMPLE_PARTITIONER -D DEQUE_THRESH=2</set>
+          <set>x1M: -D TIMES=1000000</set>
+          <set> : ,
+               ppt53: -D INNER_GRAINSIZE=53
+          </set>
+          &scalingOptions;
+      </compiler_options>
+  </execution>
+
+  <execution>
+      <name>ser</name>
+      <type>tbb</type> 
+      <benchmarks>ser</benchmarks>
+      <datasets>gDense0</datasets>
+      <compiler_options>
+          <set>x1M: -D TIMES=1000000</set>
+          &commonCompilerOptions;
+      </compiler_options>
+  </execution>
+
+  <execution>
+      <name>ser_rus</name>
+      <type>tbb</type> 
+      <benchmarks>ser</benchmarks>
+      <datasets>road_usa0</datasets>
+      <compiler_options>
+          <set>x1: -D TIMES=1</set>
+          &commonCompilerOptions;
+      </compiler_options>
+  </execution>
+
+  <execution>
+      <name>ser_rgg</name>
+      <type>tbb</type> 
+      <benchmarks>ser</benchmarks>
+      <datasets>rgg_n_2_24_s0</datasets>
+      <compiler_options>
+          <set>x1: -D TIMES=1</set>
+          &commonCompilerOptions;
+      </compiler_options>
+  </execution>
+
+  <execution>
+      <name>ser_channel</name>
+      <type>tbb</type> 
+      <benchmarks>ser</benchmarks>
+      <datasets>channel-500x100x100-b050</datasets>
+      <compiler_options>
+          <set>x1: -D TIMES=1</set>
+          &commonCompilerOptions;
+      </compiler_options>
+  </execution>
+
+  <execution>
+      <name>ser_usr</name>
+      <type>tbb</type> 
+      <benchmarks>ser</benchmarks>
+      <datasets>usroads0</datasets>
+      <compiler_options>
+          <set>x1: -D TIMES=1</set>
+          &commonCompilerOptions;
+      </compiler_options>
+  </execution>
+
+  <execution>
+      <name>TestSer</name>
+      <type>tbb</type> 
+      <benchmarks>ser</benchmarks>
+      <datasets>gSparse0, gMed0, gDense0</datasets>
+      <compiler_options>
+          &commonCompilerOptions;
+      </compiler_options>
+  </execution>
+
+  <execution>
+      <name>TestPar</name>
+      <type>tbb</type> 
+      <benchmarks>par</benchmarks>
+      <datasets>gSparse0, gMed0, gDense0</datasets>
+      <compiler_options>
+          &commonCompilerOptions;
+          <set> : ,
+               ppt53: -D INNER_GRAINSIZE=53
+          </set>
+          &partitionerOptions;
+      </compiler_options>
+  </execution>
+
+<runnable>par</runnable>
+  
+</benchmark_set>

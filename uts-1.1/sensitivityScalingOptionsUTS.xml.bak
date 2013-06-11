@@ -1,0 +1,31 @@
+<!-- FlyingThorn
+<set>
+    1th: : -T 1,
+    2th: : -T 2,
+    4th: : -T 4
+</set>-->
+
+<!-- Greeshma
+<set>
+    1th: : -T 1,
+    2th: : -T 2,
+    4th: : -T 4,
+    6th: : -T 6,
+    8th: : -T 8
+</set>-->
+
+<!-- Buzz
+<set>
+    6th: : -T 6,
+   12th: : -T 12,
+   24th: : -T 24
+</set> -->
+
+<!-- t2
+<set>
+    8th: : -T 8,
+   16th: : -T 16,
+   32th: : -T 32,
+   64th: : -T 64
+</set>
+-->

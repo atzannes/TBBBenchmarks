@@ -1,0 +1,7 @@
+<!-- T2
+<set>O3:-O3 -m64 -mcpu=v9 -MMD -ltbb -ltbbmalloc -lrt </set>
+-->
+
+<!-- Buzz & Greeshma
+<set>O3:-O3 -ltbb -ltbbmalloc</set>
+-->

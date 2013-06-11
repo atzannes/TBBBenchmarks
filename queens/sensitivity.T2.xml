@@ -1,0 +1,480 @@
+  <execution>
+      <name>sens4t2</name>
+      <type>tbb</type>
+      <benchmarks>parNoMalloc</benchmarks>
+      <datasets>4</datasets>
+      <compiler_options>
+          <set>EAutoP-x150K: -D AUTO_PARTITIONER -D TIMES=150000</set>
+          <set>
+              1thx1: -D SENS_TIMES=1: 1,
+              4thx1: -D SENS_TIMES=1: 4,
+              8thx1: -D SENS_TIMES=1: 8,
+             16thx1: -D SENS_TIMES=1: 16,
+             24thx1: -D SENS_TIMES=1: 24,
+             32thx1: -D SENS_TIMES=1: 32,
+             40thx1: -D SENS_TIMES=1: 40,
+             48thx1: -D SENS_TIMES=1: 48,
+             56thx1: -D SENS_TIMES=1: 56,
+             64thx1: -D SENS_TIMES=1: 64
+          </set>
+          <set>
+                C1: -D CUTOFF -D CUTOFF_LEVEL=1,
+                C2: -D CUTOFF -D CUTOFF_LEVEL=2,
+                C3: -D CUTOFF -D CUTOFF_LEVEL=3,
+                NC4:
+          </set>
+          &commonCompilerOptions;
+      </compiler_options>
+  </execution>
+
+  <execution>
+      <name>sens4t2BFLS</name>
+      <type>tbb</type>
+      <benchmarks>parNoMalloc</benchmarks>
+      <datasets>4</datasets>
+      <compiler_options>
+          <set>BF-LS-x150K: -D __TBB_LAZY_BF_EXECUTION  -D SIMPLE_PARTITIONER -D TIMES=150000</set>
+          <set>
+              1th: : 1,
+              4th: : 4,
+              8th: : 8,
+             16th: : 16,
+             24th: : 24,
+             32th: : 32,
+             40th: : 40,
+             48th: : 48,
+             56th: : 56,
+             64th: : 64
+          </set>
+          <!--<set>
+                x4-Nm5: -D SENS_TIMES=4 -D CUTOFF -D CUTOFF_LEVEL=(SIZE-5),
+                x4-Nm6: -D SENS_TIMES=4 -D CUTOFF -D CUTOFF_LEVEL=(SIZE-6),
+                NC4:
+          </set>-->
+          <set>
+              NC4:
+          </set>
+          &commonCompilerOptions;
+      </compiler_options>
+  </execution>
+
+  <execution>
+      <name>sens6t2</name>
+      <type>tbb</type>
+      <benchmarks>parNoMalloc</benchmarks>
+      <datasets>6</datasets>
+      <compiler_options>
+          <set>EAutoP-x20K: -D AUTO_PARTITIONER -D TIMES=20000</set>
+          <set>
+              1thx1: -D SENS_TIMES=1: 1,
+              4thx2: -D SENS_TIMES=2: 4,
+              8thx2: -D SENS_TIMES=2: 8,
+             16thx2: -D SENS_TIMES=2: 16,
+             24thx2: -D SENS_TIMES=2: 24,
+             32thx2: -D SENS_TIMES=2: 32,
+             40thx2: -D SENS_TIMES=2: 40,
+             48thx2: -D SENS_TIMES=2: 48,
+             56thx2: -D SENS_TIMES=2: 56,
+             64thx2: -D SENS_TIMES=2: 64
+          </set>
+          <set>
+                C1: -D CUTOFF -D CUTOFF_LEVEL=1,
+                C2: -D CUTOFF -D CUTOFF_LEVEL=2,
+                C3: -D CUTOFF -D CUTOFF_LEVEL=3,
+                C4: -D CUTOFF -D CUTOFF_LEVEL=4,
+                NC6:
+          </set>
+          &commonCompilerOptions;
+      </compiler_options>
+  </execution>
+
+  <execution>
+      <name>sens6t2BFLS</name>
+      <type>tbb</type>
+      <benchmarks>parNoMalloc</benchmarks>
+      <datasets>6</datasets>
+      <compiler_options>
+          <set>BFLS-x20K: -D __TBB_LAZY_BF_EXECUTION  -D SIMPLE_PARTITIONER -D TIMES=20000</set>
+          <set>
+              1thx1: -D SENS_TIMES=1: 1,
+              4thx2: -D SENS_TIMES=2: 4,
+              8thx2: -D SENS_TIMES=2: 8,
+             16thx2: -D SENS_TIMES=2: 16,
+             24thx2: -D SENS_TIMES=2: 24,
+             32thx2: -D SENS_TIMES=2: 32,
+             40thx2: -D SENS_TIMES=2: 40,
+             48thx2: -D SENS_TIMES=2: 48,
+             56thx2: -D SENS_TIMES=2: 56,
+             64thx2: -D SENS_TIMES=2: 64
+          </set>
+          <set>
+                Nm5: -D CUTOFF -D CUTOFF_LEVEL=(SIZE-5),
+                Nm6: -D CUTOFF -D CUTOFF_LEVEL=(SIZE-6),
+                NC6:
+          </set>
+          &commonCompilerOptions;
+      </compiler_options>
+  </execution>
+
+  <execution>
+      <name>sens8t2</name>
+      <type>tbb</type>
+      <benchmarks>parNoMalloc</benchmarks>
+      <datasets>8</datasets>
+      <compiler_options>
+          <set>EAutoP-x1K: -D AUTO_PARTITIONER -D TIMES=1000</set>
+          <set>
+              1thx1: -D SENS_TIMES=1: 1,
+              4thx4: -D SENS_TIMES=4: 4,
+              8thx8: -D SENS_TIMES=8: 8,
+             16thx8: -D SENS_TIMES=8: 16,
+             24thx8: -D SENS_TIMES=8: 24,
+             32thx8: -D SENS_TIMES=8: 32,
+             40thx8: -D SENS_TIMES=8: 40,
+             48thx8: -D SENS_TIMES=8: 48,
+             56thx8: -D SENS_TIMES=8: 56,
+             64thx8: -D SENS_TIMES=8: 64
+          </set>
+          <set>
+                C1: -D CUTOFF -D CUTOFF_LEVEL=1,
+                C2: -D CUTOFF -D CUTOFF_LEVEL=2,
+                C3: -D CUTOFF -D CUTOFF_LEVEL=3,
+                C4: -D CUTOFF -D CUTOFF_LEVEL=4,
+                C6: -D CUTOFF -D CUTOFF_LEVEL=6,
+                NC8:
+          </set>
+          &commonCompilerOptions;
+      </compiler_options>
+  </execution>
+
+  <execution>
+      <name>sens8t2BFLS</name>
+      <type>tbb</type>
+      <benchmarks>parNoMalloc</benchmarks>
+      <datasets>8</datasets>
+      <compiler_options>
+          <set>BFLS-x1K: -D __TBB_LAZY_BF_EXECUTION  -D SIMPLE_PARTITIONER -D TIMES=1000</set>
+          <set>
+              1thx1: -D SENS_TIMES=1: 1,
+              4thx4: -D SENS_TIMES=4: 4,
+              8thx8: -D SENS_TIMES=8: 8,
+             16thx8: -D SENS_TIMES=8: 16,
+             24thx8: -D SENS_TIMES=8: 24,
+             32thx8: -D SENS_TIMES=8: 32,
+             40thx8: -D SENS_TIMES=8: 40,
+             48thx8: -D SENS_TIMES=8: 48,
+             56thx8: -D SENS_TIMES=8: 56,
+             64thx8: -D SENS_TIMES=8: 64
+          </set>
+          <set>
+                Nm5: -D CUTOFF -D CUTOFF_LEVEL=(SIZE-5),
+                Nm6: -D CUTOFF -D CUTOFF_LEVEL=(SIZE-6),
+                NC8:
+          </set>
+          &commonCompilerOptions;
+      </compiler_options>
+  </execution>
+
+  <execution>
+      <name>sens10t2</name>
+      <type>tbb</type>
+      <benchmarks>parNoMalloc</benchmarks>
+      <datasets>10</datasets>
+      <compiler_options>
+          <set>EAutoP-x50: -D AUTO_PARTITIONER -D TIMES=50</set>
+          <set>
+              1thx1: -D SENS_TIMES=1: 1,
+              4thx4: -D SENS_TIMES=4: 4,
+              8thx8: -D SENS_TIMES=8: 8,
+             16thx16: -D SENS_TIMES=16: 16,
+             24thx16: -D SENS_TIMES=16: 24,
+             32thx16: -D SENS_TIMES=16: 32,
+             40thx16: -D SENS_TIMES=16: 40,
+             48thx16: -D SENS_TIMES=16: 48,
+             56thx16: -D SENS_TIMES=16: 56,
+             64thx16: -D SENS_TIMES=16: 64
+          </set>
+          <set>
+                C2: -D CUTOFF -D CUTOFF_LEVEL=2,
+                C3: -D CUTOFF -D CUTOFF_LEVEL=3,
+                C4: -D CUTOFF -D CUTOFF_LEVEL=4,
+                C5: -D CUTOFF -D CUTOFF_LEVEL=5,
+                C6: -D CUTOFF -D CUTOFF_LEVEL=6,
+                C8: -D CUTOFF -D CUTOFF_LEVEL=8,
+                NC10:
+          </set>
+          &commonCompilerOptions;
+      </compiler_options>
+  </execution>
+
+  <execution>
+      <name>sens10t2BFLS</name>
+      <type>tbb</type>
+      <benchmarks>parNoMalloc</benchmarks>
+      <datasets>10</datasets>
+      <compiler_options>
+          <set>BFLS-x50: -D __TBB_LAZY_BF_EXECUTION  -D SIMPLE_PARTITIONER -D TIMES=50</set>
+          <set>
+              1thx1: -D SENS_TIMES=1: 1,
+              4thx4: -D SENS_TIMES=4: 4,
+              8thx8: -D SENS_TIMES=8: 8,
+             16thx16: -D SENS_TIMES=16: 16,
+             24thx16: -D SENS_TIMES=16: 24,
+             32thx16: -D SENS_TIMES=16: 32,
+             40thx16: -D SENS_TIMES=16: 40,
+             48thx16: -D SENS_TIMES=16: 48,
+             56thx16: -D SENS_TIMES=16: 56,
+             64thx16: -D SENS_TIMES=16: 64
+          </set>
+          <set>
+                Nm5: -D CUTOFF -D CUTOFF_LEVEL=(SIZE-5),
+                Nm6: -D CUTOFF -D CUTOFF_LEVEL=(SIZE-6),
+                NC10:
+          </set>
+          &commonCompilerOptions;
+      </compiler_options>
+  </execution>
+
+  <execution>
+      <name>sens12t2</name>
+      <type>tbb</type>
+      <benchmarks>parNoMalloc</benchmarks>
+      <datasets>12</datasets>
+      <compiler_options>
+          <set>EAutoP-x1: -D AUTO_PARTITIONER -D TIMES=1</set>
+          <set>
+              1thx1: -D SENS_TIMES=1: 1,
+              4thx4: -D SENS_TIMES=4: 4,
+              8thx8: -D SENS_TIMES=8: 8,
+             16thx16: -D SENS_TIMES=16: 16,
+             24thx24: -D SENS_TIMES=24: 24,
+             32thx32: -D SENS_TIMES=32: 32,
+             40thx32: -D SENS_TIMES=32: 40,
+             48thx32: -D SENS_TIMES=32: 48,
+             56thx32: -D SENS_TIMES=32: 56,
+             64thx32: -D SENS_TIMES=32: 64
+          </set>
+          <set>
+                C2: -D CUTOFF -D CUTOFF_LEVEL=2,
+                C3: -D CUTOFF -D CUTOFF_LEVEL=3,
+                C4: -D CUTOFF -D CUTOFF_LEVEL=4,
+                C5: -D CUTOFF -D CUTOFF_LEVEL=5,
+                C6: -D CUTOFF -D CUTOFF_LEVEL=6,
+                C8: -D CUTOFF -D CUTOFF_LEVEL=8,
+                C10: -D CUTOFF -D CUTOFF_LEVEL=10,
+                NC12:
+          </set>
+          &commonCompilerOptions;
+      </compiler_options>
+  </execution>
+
+  <execution>
+      <name>sens12t2BFLS</name>
+      <type>tbb</type>
+      <benchmarks>parNoMalloc</benchmarks>
+      <datasets>12</datasets>
+      <compiler_options>
+          <set>BFLS-x1: -D __TBB_LAZY_BF_EXECUTION  -D SIMPLE_PARTITIONER -D TIMES=1</set>
+          <set>
+              1thx1: -D SENS_TIMES=1: 1,
+              4thx4: -D SENS_TIMES=4: 4,
+              8thx8: -D SENS_TIMES=8: 8,
+             16thx16: -D SENS_TIMES=16: 16,
+             24thx24: -D SENS_TIMES=24: 24,
+             32thx32: -D SENS_TIMES=32: 32,
+             40thx32: -D SENS_TIMES=32: 40,
+             48thx32: -D SENS_TIMES=32: 48,
+             56thx32: -D SENS_TIMES=32: 56,
+             64thx32: -D SENS_TIMES=32: 64
+          </set>
+          <set>
+                Nm5: -D CUTOFF -D CUTOFF_LEVEL=(SIZE-5),
+                Nm6: -D CUTOFF -D CUTOFF_LEVEL=(SIZE-6),
+                NC12:
+          </set>
+          &commonCompilerOptions;
+      </compiler_options>
+  </execution>
+
+  <execution>
+      <name>sens13t2</name>
+      <type>tbb</type>
+      <benchmarks>parNoMalloc</benchmarks>
+      <datasets>13</datasets>
+      <compiler_options>
+          <set>EAutoP-x1: -D AUTO_PARTITIONER -D TIMES=1</set>
+          <set>
+              1thx1: -D SENS_TIMES=1: 1,
+              4thx1: -D SENS_TIMES=1: 4,
+              8thx2: -D SENS_TIMES=2: 8,
+             16thx3: -D SENS_TIMES=3: 16,
+             24thx3: -D SENS_TIMES=3: 24,
+             32thx4: -D SENS_TIMES=4: 32,
+             40thx4: -D SENS_TIMES=4: 40,
+             48thx4: -D SENS_TIMES=4: 48,
+             56thx4: -D SENS_TIMES=4: 56,
+             64thx4: -D SENS_TIMES=4: 64
+          </set>
+          <set>
+                C2: -D CUTOFF -D CUTOFF_LEVEL=2,
+                C3: -D CUTOFF -D CUTOFF_LEVEL=3,
+                C4: -D CUTOFF -D CUTOFF_LEVEL=4,
+                C5: -D CUTOFF -D CUTOFF_LEVEL=5,
+                C6: -D CUTOFF -D CUTOFF_LEVEL=6,
+                C8: -D CUTOFF -D CUTOFF_LEVEL=8,
+                C10: -D CUTOFF -D CUTOFF_LEVEL=10,
+                C12: -D CUTOFF -D CUTOFF_LEVEL=12,
+                NC13:
+          </set>
+          &commonCompilerOptions;
+      </compiler_options>
+  </execution>
+
+  <execution>
+      <name>sens13t2BFLS</name>
+      <type>tbb</type>
+      <benchmarks>parNoMalloc</benchmarks>
+      <datasets>13</datasets>
+      <compiler_options>
+          <set>BFLS-x1: -D __TBB_LAZY_BF_EXECUTION  -D SIMPLE_PARTITIONER -D TIMES=1</set>
+          <set>
+              1thx1: -D SENS_TIMES=1: 1,
+              4thx1: -D SENS_TIMES=1: 4,
+              8thx2: -D SENS_TIMES=2: 8,
+             16thx3: -D SENS_TIMES=3: 16,
+             24thx3: -D SENS_TIMES=3: 24,
+             32thx4: -D SENS_TIMES=4: 32,
+             40thx4: -D SENS_TIMES=4: 40,
+             48thx4: -D SENS_TIMES=4: 48,
+             56thx4: -D SENS_TIMES=4: 56,
+             64thx4: -D SENS_TIMES=4: 64
+          </set>
+          <set>
+                Nm5: -D CUTOFF -D CUTOFF_LEVEL=(SIZE-5),
+                Nm6: -D CUTOFF -D CUTOFF_LEVEL=(SIZE-6),
+                NC13:
+          </set>
+          &commonCompilerOptions;
+      </compiler_options>
+  </execution>
+
+  <execution>
+      <name>sens14t2</name>
+      <type>tbb</type>
+      <benchmarks>parNoMalloc</benchmarks>
+      <datasets>14</datasets>
+      <compiler_options>
+          <set>EAutoP-x1: -D AUTO_PARTITIONER -D TIMES=1</set>
+          <set>
+              1thx1: -D SENS_TIMES=1: 1,
+              4thx1: -D SENS_TIMES=1: 4,
+              8thx1: -D SENS_TIMES=1: 8,
+             16thx1: -D SENS_TIMES=1: 16,
+             24thx1: -D SENS_TIMES=1: 24,
+             32thx1: -D SENS_TIMES=1: 32,
+             40thx1: -D SENS_TIMES=1: 40,
+             48thx1: -D SENS_TIMES=1: 48,
+             56thx1: -D SENS_TIMES=1: 56,
+             64thx1: -D SENS_TIMES=1: 64
+          </set>
+          <set>
+                C2: -D CUTOFF -D CUTOFF_LEVEL=2,
+                C4: -D CUTOFF -D CUTOFF_LEVEL=4,
+                C6: -D CUTOFF -D CUTOFF_LEVEL=6,
+                C8: -D CUTOFF -D CUTOFF_LEVEL=8,
+                C10: -D CUTOFF -D CUTOFF_LEVEL=10,
+                C12: -D CUTOFF -D CUTOFF_LEVEL=12,
+                NC14:
+          </set>
+          &commonCompilerOptions;
+      </compiler_options>
+  </execution>
+
+  <execution>
+      <name>ser4t2</name>
+      <type>tbb</type>
+      <benchmarks>serOpt</benchmarks>
+      <datasets>4</datasets>
+      <compiler_options>
+          <set>x150Kx4: -D TIMES=150000 -D SENS_TIMES=4</set>
+          &commonCompilerOptions;
+      </compiler_options>
+  </execution>
+
+  <execution>
+      <name>ser5t2</name>
+      <type>tbb</type>
+      <benchmarks>serOpt</benchmarks>
+      <datasets>5</datasets>
+      <compiler_options>
+          <set>x100Kx1: -D TIMES=100000</set>
+          &commonCompilerOptions;
+      </compiler_options>
+  </execution>
+
+  <execution>
+      <name>ser6t2</name>
+      <type>tbb</type>
+      <benchmarks>serOpt</benchmarks>
+      <datasets>6</datasets>
+      <compiler_options>
+          <set>x20K: -D TIMES=20000</set>
+          &commonCompilerOptions;
+      </compiler_options>
+  </execution>
+
+  <execution>
+      <name>ser8t2</name>
+      <type>tbb</type>
+      <benchmarks>serOpt</benchmarks>
+      <datasets>8</datasets>
+      <compiler_options>
+          <set>x1K: -D TIMES=1000</set>
+          &commonCompilerOptions;
+      </compiler_options>
+  </execution>
+
+  <execution>
+      <name>ser10t2</name>
+      <type>tbb</type>
+      <benchmarks>serOpt</benchmarks>
+      <datasets>10</datasets>
+      <compiler_options>
+          <set>x40: -D AUTO_PARTITIONER -D TIMES=40</set>
+          &commonCompilerOptions;
+      </compiler_options>
+  </execution>
+
+  <execution>
+      <name>ser12t2</name>
+      <type>tbb</type>
+      <benchmarks>serOpt</benchmarks>
+      <datasets>12</datasets>
+      <compiler_options>
+          <set>x1: -D AUTO_PARTITIONER -D TIMES=1</set>
+          &commonCompilerOptions;
+      </compiler_options>
+  </execution>
+
+  <execution>
+      <name>ser13t2</name>
+      <type>tbb</type>
+      <benchmarks>serOpt</benchmarks>
+      <datasets>13</datasets>
+      <compiler_options>
+          <set>x1: -D AUTO_PARTITIONER -D TIMES=1</set>
+          &commonCompilerOptions;
+      </compiler_options>
+  </execution>
+
+  <execution>
+      <name>ser14t2</name>
+      <type>tbb</type>
+      <benchmarks>serOpt</benchmarks>
+      <datasets>14</datasets>
+      <compiler_options>
+          <set>x1: -D AUTO_PARTITIONER -D TIMES=1</set>
+          &commonCompilerOptions;
+      </compiler_options>
+  </execution>
+

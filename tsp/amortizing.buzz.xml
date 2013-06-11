@@ -1,0 +1,105 @@
+  <execution>
+      <name>amortizing4</name>
+      <type>tbb</type>
+      <benchmarks>parOptCut</benchmarks>
+      <datasets>4</datasets>
+      <compiler_options>
+          <set>BFLS-x500K-C2: -D __TBB_LAZY_BF_EXECUTION -D SIMPLE_PARTITIONER -D TIMES=500000 -D CUTOFF -D CUTOFF_LEVEL=2</set>
+          <set>
+              2thx1: -D SENS_TIMES=1: 2,
+             24thx1: -D SENS_TIMES=1: 
+          </set>
+          &commonCompilerOptions;
+      </compiler_options>
+  </execution>
+
+  <execution>
+      <name>ser4</name>
+      <type>tbb</type>
+      <benchmarks>ser</benchmarks>
+      <datasets>4</datasets>
+      <compiler_options>
+          <set>x1M: -D TIMES=1000000</set>
+          &commonCompilerOptions;
+      </compiler_options>
+  </execution>
+
+  <execution>
+      <name>amortizing6</name>
+      <type>tbb</type>
+      <benchmarks>parOptCut</benchmarks>
+      <datasets>6</datasets>
+      <compiler_options>
+          <set>BFLS-x80K-C2: -D __TBB_LAZY_BF_EXECUTION -D SIMPLE_PARTITIONER -D TIMES=80000 -D CUTOFF -D CUTOFF_LEVEL=2</set>
+          <set>
+              2thx1: : 2,
+              4thx1: : 4,
+             24thx1: : 
+          </set>
+          &commonCompilerOptions;
+      </compiler_options>
+  </execution>
+
+  <execution>
+      <name>ser6</name>
+      <type>tbb</type>
+      <benchmarks>ser</benchmarks>
+      <datasets>6</datasets>
+      <compiler_options>
+          <set>x80K: -D TIMES=80000</set>
+          &commonCompilerOptions;
+      </compiler_options>
+  </execution>
+
+  <execution>
+      <name>amortizing7</name>
+      <type>tbb</type>
+      <benchmarks>parOptCut</benchmarks>
+      <datasets>7</datasets>
+      <compiler_options>
+          <set>BFLS-x15K-C2: -D __TBB_LAZY_BF_EXECUTION -D SIMPLE_PARTITIONER -D TIMES=15000 -D CUTOFF -D CUTOFF_LEVEL=2</set>
+          <set>
+              2thx1: : 2,
+             24thx1: :
+          </set>
+          &commonCompilerOptions;
+      </compiler_options>
+  </execution>
+
+  <execution>
+      <name>ser7</name>
+      <type>tbb</type>
+      <benchmarks>ser</benchmarks>
+      <datasets>7</datasets>
+      <compiler_options>
+          <set>x15K: -D TIMES=15000</set>
+          &commonCompilerOptions;
+      </compiler_options>
+  </execution>
+
+  <execution>
+      <name>amortizing9</name>
+      <type>tbb</type>
+      <benchmarks>parOptCut</benchmarks>
+      <datasets>9</datasets>
+      <compiler_options>
+          <set>BFLS-x500-C2: -D __TBB_LAZY_BF_EXECUTION -D SIMPLE_PARTITIONER -D TIMES=500 -D CUTOFF -D CUTOFF_LEVEL=2</set>
+          <set>
+              2thx1: : 2,
+             24thx1: : 
+          </set>
+          &commonCompilerOptions;
+      </compiler_options>
+  </execution>
+
+  <execution>
+      <name>ser9</name>
+      <type>tbb</type>
+      <benchmarks>ser</benchmarks>
+      <datasets>9</datasets>
+      <compiler_options>
+          <set>x500: -D TIMES=500</set>
+          &commonCompilerOptions;
+      </compiler_options>
+  </execution>
+
