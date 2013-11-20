@@ -13,6 +13,23 @@
  *
  */
 
+/* 
+ *  Alexandros Tzannes. atzannes@gmail.com
+ *  Scheduler versions controlled by #define (only for __PTHREADS__ targets):
+ *
+ *  1) __ORIGINAL_UTS_SCHEDULING : the original UTS code
+ *
+ *  2) __LAZY_SCHEDULING : only place work in shared segment if it is empty
+ *     and when doing so place half of the available tasks. Steal all tasks
+ *     from victim deques, and take half tasks from the local deque
+ *
+ *  3) __NAIVE_LAZY_SCHEDULING : push k tasks when shared segment is empty.
+ *    Steal and pop k-chunks at a time.
+ *
+ *  4) __EAGER_STEAL_HALF : push & pop k-tasks at a time. Steal half shared 
+ *     tasks.
+ */
+
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
@@ -609,8 +626,10 @@ int ss_steal(StealStack *s, int victim, int k) {
   if (s->sharedStart != s->top)
     ss_error("ss_steal: thief attempts to steal onto non-empty stack");
 
+  /* moved this check later when we are sure how many tasks to steal 
   if (s->top + k >= s->stackSize)
     ss_error("ss_steal: steal will overflow thief's stack");
+  */
   
   /* lock victim stack and try to reserve k elts */
   if (debug & 32)
@@ -634,15 +653,32 @@ int ss_steal(StealStack *s, int victim, int k) {
     ss_error("ss_steal: stealStack invariant violated");
   
   ok = victimWorkAvail >= k;
+#ifdef __EAGER_STEAL_HALF 
+  int half; // initialized below and re-used later
+#endif 
   if (ok) {
 #ifdef __LAZY_SCHEDULING
-    /* steal all nodes */
+    /* reserve all nodes */
+    if (s->top + victimShared >= s->stackSize)
+      ss_error("ss_steal: steal will overflow thief's stack");
     stealStack[victim]->sharedStart =  victimShared + victimWorkAvail;
     stealStack[victim]->workAvail = 0;
-#else
-    /* reserve a chunk */
+#else 
+ #ifdef __EAGER_STEAL_HALF 
+    /* reserve half the nodes nodes */
+    half = (victimWorkAvail >= 2*k) ? (victimWorkAvail+1)/2 // ceil(victimWorkAvail/2)
+                                    : victimWorkAvail;      // don't leave fewer than k tasks 
+    if (s->top + half >= s->stackSize)
+      ss_error("ss_steal: steal will overflow thief's stack");
+    stealStack[victim]->sharedStart =  victimShared + half;
+    stealStack[victim]->workAvail = victimWorkAvail - half;
+ #else // __NAIVE_LAZY_SCHEDULING or __ORIGINAL_UTS_SCHEDULING
+    if (s->top + k >= s->stackSize)
+      ss_error("ss_steal: steal will overflow thief's stack");
+    /* reserve a k-chunk */
     stealStack[victim]->sharedStart =  victimShared + k;
     stealStack[victim]->workAvail = victimWorkAvail - k;
+ #endif
 #endif
 
 #ifdef _SHMEM
@@ -669,7 +705,11 @@ int ss_steal(StealStack *s, int victim, int k) {
  #ifdef __LAZY_SCHEDULING
     SMEMCPY(&(s->stack[s->top]), victimSharedStart, victimWorkAvail * sizeof(Node));
  #else
+  #ifdef __EAGER_STEAL_HALF
+    SMEMCPY(&(s->stack[s->top]), victimSharedStart, half * sizeof(Node));
+  #else //  __NAIVE_LAZY_SCHEDULING or __ORIGINAL_UTS_SCHEDULING
     SMEMCPY(&(s->stack[s->top]), victimSharedStart, k * sizeof(Node));
+  #endif
  #endif
 #endif
 
@@ -679,7 +719,11 @@ int ss_steal(StealStack *s, int victim, int k) {
 #ifdef __LAZY_SCHEDULING
       for (i = 0; i < victimWorkAvail; i ++) {
 #else 
+ #ifdef __EAGER_STEAL_HALF
+      for (i = 0; i < half; i++) {
+ #else //  __NAIVE_LAZY_SCHEDULING or __ORIGINAL_UTS_SCHEDULING
       for (i = 0; i < k; i ++) {
+ #endif
 #endif
         Node * r = &(s->stack[s->top + i]);
         printf("ss_steal:  Thread %2d posn %d (steal #%d) receives %s [%d] from thread %d posn %d (%p)\n",
@@ -692,7 +736,11 @@ int ss_steal(StealStack *s, int victim, int k) {
 #ifdef __LAZY_SCHEDULING
     s->top += victimWorkAvail;
 #else
+ #ifdef __EAGER_STEAL_HALF
+    s->top += half;
+ #else //  __NAIVE_LAZY_SCHEDULING or __ORIGINAL_UTS_SCHEDULING
     s->top += k;
+ #endif
 #endif
 
    #ifdef TRACE
@@ -707,8 +755,13 @@ int ss_steal(StealStack *s, int victim, int k) {
       printf("Thread %d failed to steal %d nodes from thread %d, ActAv = %d, sh = %d, loc =%d\n",
 	     GET_THREAD_NUM, victimWorkAvail, victim, victimWorkAvail, victimShared, victimLocal);
 #else
+ #ifdef __EAGER_STEAL_HALF
+      printf("Thread %d failed to steal %d nodes from thread %d, ActAv = %d, sh = %d, loc =%d\n",
+	     GET_THREAD_NUM, half, victim, victimWorkAvail, victimShared, victimLocal);
+ #else //  __NAIVE_LAZY_SCHEDULING or __ORIGINAL_UTS_SCHEDULING
       printf("Thread %d failed to steal %d nodes from thread %d, ActAv = %d, sh = %d, loc =%d\n",
 	     GET_THREAD_NUM, k, victim, victimWorkAvail, victimShared, victimLocal);
+ #endif
 #endif
     }
   }
@@ -1160,12 +1213,12 @@ void cbarrier_cancel() {
 
 void releaseNodes(StealStack *ss){
   if (doSteal) {
-#ifdef __LAZY_SCHEDULING
+#if defined __LAZY_SCHEDULING || __NAIVE_LAZY_SCHEDULING
     if (ss_localDepth(ss) > 2 * chunkSize && ss->workAvail == 0) {
       // Attribute this time to runtime overhead
       ss_setState(ss, SS_OVH);
       ss_release(ss, ss_localDepth(ss)/2);
-#else // not(__LAZY_SCHEDULING)
+#else // __ORIGINAL_UTS_SCHEDULING || __EAGER_STEAL_HALF
     if (ss_localDepth(ss) > 2 * chunkSize) {
       // Attribute this time to runtime overhead
       ss_setState(ss, SS_OVH);
@@ -1242,8 +1295,15 @@ void parTreeSearch(StealStack *ss) {
     }
     //printf("Called (FAILED) ss_acquire w. amt=%d\n", amt);
 #else
+ #ifdef __EAGER_STEAL_HALF
+    int amt = (2*chunkSize <= ss->workAvail) ? chunkSize : max(ss->workAvail,1);
+    if (ss_acquire(ss, amt)) {
+      continue;
+    }
+ #else // __NAIVE_LAZY_SCHEDULING  ||  __ORIGINAL_UTS_SCHEDULING
     if (ss_acquire(ss, chunkSize))
       continue;
+ #endif
 #endif
     /* no work left in this thread's stack           */
     /* try to steal work from another thread's stack */
@@ -1360,12 +1420,20 @@ int showStats(double elapsedSecs) {
   // With lazy scheduling an acquire may pick half the nodes that were 
   // previously released. A steal takes all nodes. So trel <= tacq+tsteal
   if (trel > tacq + tsteal) {
-    printf("*** error! total released != total acquired + total stolen\n");
+    printf("*** error! total released > total acquired + total stolen\n");
   }
 #else
+ #ifdef __EAGER_STEAL_HALF
+  // With eager steal half scheduling multiple releases may be stolen by a single
+  // theft. So trel - taq >= tsteal
   if (trel != tacq + tsteal) {
     printf("*** error! total released != total acquired + total stolen\n");
   }
+ #else // __NAIVE_LAZY_SCHEDULING || __ORIGINAL_UTS_SCHEDULING
+  if (trel != tacq + tsteal) {
+    printf("*** error! total released != total acquired + total stolen\n");
+  }
+ #endif
 #endif
   uts_showStats(GET_NUM_THREADS, chunkSize, elapsedSecs, tnodes, tleaves, mheight);
 

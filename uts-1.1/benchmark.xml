@@ -157,6 +157,18 @@
   </benchmark>
   
   <benchmark>
+    <name>parChunkEagerStealHalf</name>
+    <filename>uts_shm.c rng/brg_sha1.c uts.c -lm -DBRG_RNG -D__EAGER_STEAL_HALF -D__PTHREADS__ -lpthread ../xboutils/xboutilsGCC.o</filename>
+    <dumpvar>result.hex</dumpvar>
+  </benchmark>
+  
+  <benchmark>
+    <name>parChunkLazyNaive</name>
+    <filename>uts_shm.c rng/brg_sha1.c uts.c -lm -DBRG_RNG -D__NAIVE_LAZY_SCHEDULING -D__PTHREADS__ -lpthread ../xboutils/xboutilsGCC.o</filename>
+    <dumpvar>result.hex</dumpvar>
+  </benchmark>
+  
+  <benchmark>
     <name>parChunkLazy</name>
     <filename>uts_shm.c rng/brg_sha1.c uts.c -lm -DBRG_RNG -D__LAZY_SCHEDULING -D__PTHREADS__ -lpthread ../xboutils/xboutilsGCC.o</filename>
     <dumpvar>result.hex</dumpvar>
@@ -185,7 +197,7 @@
   <execution>
     <name>parT1</name> <!-- Geometric -->
     <type>x86</type>
-    <benchmarks>parChunk, parChunkLazy</benchmarks>
+    <benchmarks>parChunk, parChunkEagerStealHalf, parChunkLazyNaive, parChunkLazy</benchmarks> 
     <datasets>T1</datasets>
     <compiler_options>
       &scalingOptions;
@@ -207,7 +219,7 @@
   <execution>
     <name>parT1L</name> <!-- Geometric -->
     <type>x86</type>
-    <benchmarks>parChunk, parChunkLazy</benchmarks>
+    <benchmarks>parChunk, parChunkEagerStealHalf, parChunkLazyNaive, parChunkLazy</benchmarks> 
     <datasets>T1L</datasets>
     <compiler_options>
       &scalingOptions;
@@ -229,7 +241,7 @@
   <execution>
     <name>parT2L</name> <!-- Geometric -->
     <type>x86</type>
-    <benchmarks>parChunk, parChunkLazy</benchmarks>
+    <benchmarks>parChunk, parChunkEagerStealHalf, parChunkLazyNaive, parChunkLazy</benchmarks> 
     <datasets>T2L</datasets>
     <compiler_options>
       &scalingOptions;
@@ -251,7 +263,7 @@
   <execution>
     <name>parT3L</name> <!-- Binomial -->
     <type>x86</type>
-    <benchmarks>parChunk, parChunkLazy</benchmarks>
+    <benchmarks>parChunk, parChunkEagerStealHalf, parChunkLazyNaive, parChunkLazy</benchmarks> 
     <datasets>T3L</datasets>
     <compiler_options>
       &scalingOptions;
@@ -263,7 +275,7 @@
   <execution>
     <name>sensT1L</name> <!-- Geometric -->
     <type>x86</type>
-    <benchmarks>parChunk, parChunkLazy</benchmarks>
+    <benchmarks>parChunk, parChunkEagerStealHalf, parChunkLazyNaive, parChunkLazy</benchmarks> 
     <datasets>T1L</datasets>
     <compiler_options>
       <set>T1L: -O3 :-t 1 -a 3 -d 13 -b 4 -r 29</set>
@@ -275,7 +287,7 @@
   <execution>
     <name>sensT2L</name> <!-- Geometric -->
     <type>x86</type>
-    <benchmarks>parChunk, parChunkLazy</benchmarks>
+    <benchmarks>parChunk, parChunkEagerStealHalf, parChunkLazyNaive, parChunkLazy</benchmarks> 
     <datasets>T2L</datasets>
     <compiler_options>
       <set>T2L: -O3 :-t 1 -a 2 -d 23 -b 7 -r 220</set>
@@ -287,7 +299,7 @@
   <execution>
     <name>sensT3L</name> <!-- Binomial -->
     <type>x86</type>
-    <benchmarks>parChunk, parChunkLazy</benchmarks>
+    <benchmarks>parChunk, parChunkEagerStealHalf, parChunkLazyNaive, parChunkLazy</benchmarks> 
     <datasets>T3L</datasets>
     <compiler_options>
       <set>T3L: -O3 :-t 0 -b 2000 -q 0.200014 -m 5 -r 7</set>
