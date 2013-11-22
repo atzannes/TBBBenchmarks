@@ -1213,16 +1213,23 @@ void cbarrier_cancel() {
 
 void releaseNodes(StealStack *ss){
   if (doSteal) {
-#if defined __LAZY_SCHEDULING || __NAIVE_LAZY_SCHEDULING
+#ifdef __LAZY_SCHEDULING 
     if (ss_localDepth(ss) > 2 * chunkSize && ss->workAvail == 0) {
       // Attribute this time to runtime overhead
       ss_setState(ss, SS_OVH);
       ss_release(ss, ss_localDepth(ss)/2);
-#else // __ORIGINAL_UTS_SCHEDULING || __EAGER_STEAL_HALF
+#else 
+ #ifdef __NAIVE_LAZY_SCHEDULING
+    if (ss_localDepth(ss) > 2 * chunkSize && ss->workAvail == 0) {
+      // Attribute this time to runtime overhead
+      ss_setState(ss, SS_OVH);
+      ss_release(ss, chunkSize);
+ #else // __ORIGINAL_UTS_SCHEDULING || __EAGER_STEAL_HALF
     if (ss_localDepth(ss) > 2 * chunkSize) {
       // Attribute this time to runtime overhead
       ss_setState(ss, SS_OVH);
       ss_release(ss, chunkSize);
+ #endif
 #endif
       // This has significant overhead on clusters!
       if (ss->nNodes % cbint == 0) {
@@ -1426,7 +1433,7 @@ int showStats(double elapsedSecs) {
  #ifdef __EAGER_STEAL_HALF
   // With eager steal half scheduling multiple releases may be stolen by a single
   // theft. So trel - taq >= tsteal
-  if (trel != tacq + tsteal) {
+  if (trel - tacq < tsteal) {
     printf("*** error! total released != total acquired + total stolen\n");
   }
  #else // __NAIVE_LAZY_SCHEDULING || __ORIGINAL_UTS_SCHEDULING

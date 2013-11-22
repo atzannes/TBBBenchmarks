@@ -2,7 +2,7 @@
 
 DIRS="bfs convolution floyd_warshall matmult queens tsp SpMV fib uts-1.1"
 HOSTNAME=`hostname`
-TARFILE=${HOSTNAME}-results.tar
+TARFILE=${HOSTNAME}-results-git-repos.tar
 GZIPFILE=${TARFILE}.gz
 
 echo ${HOSTNAME}
