@@ -7,6 +7,7 @@
           <!ENTITY scalingOptions        SYSTEM "scalingOptionsUTS.xml">
           <!ENTITY sensScalingOptions    SYSTEM "sensitivityScalingOptionsUTS.xml">
           <!ENTITY commonCompilerOptions SYSTEM "../commonCompilerOptions.xml">
+          <!ENTITY partitionerOptions    SYSTEM "../partitionerOptions.xml">
 ]>
 
 <benchmark_set>
@@ -176,12 +177,12 @@
   </benchmark>
   
   <execution>
-    <name>serTBB</name>
+    <name>serTBBT1</name>
     <type>tbb</type>
     <benchmarks>serTBB</benchmarks>
     <datasets>T1</datasets>
     <compiler_options>
-      <set>T1: -O3 : -t 1 -a 3 -d 10 -b 4 -r 19</set>       
+      <set>T1: -O3 -ltbb -ltbbmalloc : -t 1 -a 3 -d 10 -b 4 -r 19</set>       
     </compiler_options>
   </execution>
 
@@ -205,7 +206,20 @@
       &T2Options;
       &scalingOptions;
       &chunkOptions;
-      <set>T1: -O3 :-t 1 -a 3 -d 10 -b 4 -r 19</set>
+      <set>T1: -O3 :-t 1 -a 3 -d 10 -b 4 -r 19 -v 2</set>
+    </compiler_options>
+  </execution>
+
+  <execution>
+    <name>parTBBT1</name> <!-- Geometric -->
+    <type>tbb</type>
+    <benchmarks>parTBB</benchmarks> 
+    <datasets>T1</datasets>
+    <compiler_options>
+      <set>T1: -O3 -ltbb -ltbbmalloc :-t 1 -a 3 -d 10 -b 4 -r 19 -v 2</set>
+      &partitionerOptions;
+      &scalingOptions;
+      &chunkOptions;
     </compiler_options>
   </execution>
 
@@ -221,6 +235,16 @@
   </execution>
 
   <execution>
+    <name>serTBBT1L</name> <!-- Geometric -->
+    <type>tbb</type>
+    <benchmarks>serTBB</benchmarks>
+    <datasets>T1L</datasets>
+    <compiler_options>
+      <set>T1L: -O3 -ltbb -ltbbmalloc :-t 1 -a 3 -d 13 -b 4 -r 29 -v 2</set>
+    </compiler_options>
+  </execution>
+
+  <execution>
     <name>parT1L</name> <!-- Geometric -->
     <type>x86</type>
     <benchmarks>parChunk, parChunkEagerStealHalf, parChunkLazyNaive, parChunkLazy</benchmarks> 
@@ -230,6 +254,18 @@
       &scalingOptions;
       &chunkOptions;
       <set>T1L: -O3 :-t 1 -a 3 -d 13 -b 4 -r 29 -v 2</set>
+    </compiler_options>
+  </execution>
+
+  <execution>
+    <name>parTBBT1L</name> <!-- Geometric -->
+    <type>tbb</type>
+    <benchmarks>parTBB</benchmarks> 
+    <datasets>T1L</datasets>
+    <compiler_options>
+      <set>T1L: -O3 -ltbb -ltbbmalloc :-t 1 -a 3 -d 13 -b 4 -r 29 -v 2</set>
+      &partitionerOptions;
+      &scalingOptions;
     </compiler_options>
   </execution>
 
@@ -258,6 +294,28 @@
   </execution>
 
   <execution>
+    <name>serTBBT2L</name> <!-- Geometric -->
+    <type>tbb</type>
+    <benchmarks>serTBB</benchmarks>
+    <datasets>T2L</datasets>
+    <compiler_options>
+      <set>T2L: -O3 -ltbb -ltbbmalloc :-t 1 -a 2 -d 23 -b 7 -r 220 -v 2</set>
+    </compiler_options>
+  </execution>
+
+  <execution>
+    <name>parTBBT2L</name> <!-- Geometric -->
+    <type>tbb</type>
+    <benchmarks>parTBB</benchmarks> 
+    <datasets>T2L</datasets>
+    <compiler_options>
+      <set>T2L: -O3 -ltbb -ltbbmalloc :-t 1 -a 2 -d 23 -b 7 -r 220 -v 2</set>
+      &partitionerOptions;
+      &scalingOptions;
+    </compiler_options>
+  </execution>
+
+  <execution>
     <name>serT3L</name> <!-- Binomial -->
     <type>x86</type>
     <benchmarks>ser</benchmarks>
@@ -282,6 +340,28 @@
   </execution>
 
   <execution>
+    <name>serTBBT3L</name> <!-- Binomial -->
+    <type>tbb</type>
+    <benchmarks>serTBB</benchmarks>
+    <datasets>T3L</datasets>
+    <compiler_options>
+      <set>T3L: -O3 -ltbb -ltbbmalloc:-t 0 -b 2000 -q 0.200014 -m 5 -r 7 -v 2</set>
+    </compiler_options>
+  </execution>
+
+  <execution>
+    <name>parTBBT3L</name> <!-- Binomial -->
+    <type>tbb</type>
+    <benchmarks>parTBB</benchmarks> 
+    <datasets>T3L</datasets>
+    <compiler_options>
+      <set>T3L: -O3 -ltbb -ltbbmalloc :-t 0 -b 2000 -q 0.200014 -m 5 -r 7 -v 2</set>
+      &partitionerOptions;
+      &scalingOptions;
+    </compiler_options>
+  </execution>
+
+  <execution>
     <name>sensT1L</name> <!-- Geometric -->
     <type>x86</type>
     <benchmarks>parChunk, parChunkEagerStealHalf, parChunkLazyNaive, parChunkLazy</benchmarks> 
@@ -293,6 +373,20 @@
       &sensChunkOptionsGeo;
     </compiler_options>
   </execution>
+
+  <execution>
+    <name>sensT1Lrerun</name> <!-- Geometric -->
+    <type>x86</type>
+    <benchmarks>parChunkLazy</benchmarks> 
+    <datasets>T1L</datasets>
+    <compiler_options>
+      <set>T1L: -O3 :-t 1 -a 3 -d 13 -b 4 -r 29 -v 2</set>
+      <set>6th: : -T 6</set>
+      <set>C40: : -c 40</set>
+
+    </compiler_options>
+  </execution>
+
 
   <execution>
     <name>sensT2L</name> <!-- Geometric -->
@@ -316,6 +410,18 @@
       <set>T3L: -O3 :-t 0 -b 2000 -q 0.200014 -m 5 -r 7 -v 2</set>
       &T2Options;
       &sensScalingOptions;
+      &sensChunkOptionsBin;
+    </compiler_options>
+  </execution>
+
+  <execution>
+    <name>sensT3Lrerun</name> <!-- Binomial -->
+    <type>x86</type>
+    <benchmarks>parChunkLazy</benchmarks> 
+    <datasets>T3L</datasets>
+    <compiler_options>
+      <set>T3L: -O3 :-t 0 -b 2000 -q 0.200014 -m 5 -r 7 -v 2</set>
+      <set>24th: : -T 24</set>
       &sensChunkOptionsBin;
     </compiler_options>
   </execution>
