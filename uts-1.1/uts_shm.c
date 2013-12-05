@@ -1301,16 +1301,9 @@ void parTreeSearch(StealStack *ss) {
       continue;
     }
     //printf("Called (FAILED) ss_acquire w. amt=%d\n", amt);
-#else
- #ifdef __EAGER_STEAL_HALF
-    int amt = (2*chunkSize <= ss->workAvail) ? chunkSize : max(ss->workAvail,1);
-    if (ss_acquire(ss, amt)) {
-      continue;
-    }
- #else // __NAIVE_LAZY_SCHEDULING  ||  __ORIGINAL_UTS_SCHEDULING
+#else // __EAGER_STEAL_HALF || __NAIVE_LAZY_SCHEDULING  ||  __ORIGINAL_UTS_SCHEDULING
     if (ss_acquire(ss, chunkSize))
       continue;
- #endif
 #endif
     /* no work left in this thread's stack           */
     /* try to steal work from another thread's stack */
