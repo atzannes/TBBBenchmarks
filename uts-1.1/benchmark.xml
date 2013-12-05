@@ -1,5 +1,6 @@
 <?xml version="1.0"?>
 <!DOCTYPE benchmark [
+          <!ENTITY T2Options             SYSTEM "T2Options.xml">
           <!ENTITY chunkOptions          SYSTEM "chunkOptions.xml">
           <!ENTITY sensChunkOptionsGeo   SYSTEM "sensitivityChunkOptionsGeo.xml">
           <!ENTITY sensChunkOptionsBin   SYSTEM "sensitivityChunkOptionsBin.xml">
@@ -191,6 +192,7 @@
     <benchmarks>ser</benchmarks>
     <datasets>T1</datasets>
     <compiler_options>
+      &T2Options;
       <set>T1: -O3 :-t 1 -a 3 -d 10 -b 4 -r 19</set>
     </compiler_options>
   </execution>
@@ -201,6 +203,7 @@
     <benchmarks>parChunk, parChunkEagerStealHalf, parChunkLazyNaive, parChunkLazy</benchmarks> 
     <datasets>T1</datasets>
     <compiler_options>
+      &T2Options;
       &scalingOptions;
       &chunkOptions;
       <set>T1: -O3 :-t 1 -a 3 -d 10 -b 4 -r 19 -v 2</set>
@@ -226,6 +229,7 @@
     <benchmarks>ser</benchmarks>
     <datasets>T1L</datasets>
     <compiler_options>
+      &T2Options;
       <set>T1L: -O3 :-t 1 -a 3 -d 13 -b 4 -r 29 -v 2</set>
     </compiler_options>
   </execution>
@@ -246,6 +250,7 @@
     <benchmarks>parChunk, parChunkEagerStealHalf, parChunkLazyNaive, parChunkLazy</benchmarks> 
     <datasets>T1L</datasets>
     <compiler_options>
+      &T2Options;
       &scalingOptions;
       &chunkOptions;
       <set>T1L: -O3 :-t 1 -a 3 -d 13 -b 4 -r 29 -v 2</set>
@@ -270,6 +275,7 @@
     <benchmarks>ser</benchmarks>
     <datasets>T2L</datasets>
     <compiler_options>
+      &T2Options;
       <set>T2L: -O3 :-t 1 -a 2 -d 23 -b 7 -r 220 -v 2</set>
     </compiler_options>
   </execution>
@@ -280,6 +286,7 @@
     <benchmarks>parChunk, parChunkEagerStealHalf, parChunkLazyNaive, parChunkLazy</benchmarks> 
     <datasets>T2L</datasets>
     <compiler_options>
+      &T2Options;
       &scalingOptions;
       &chunkOptions;
       <set>T2L: -O3 :-t 1 -a 2 -d 23 -b 7 -r 220 -v 2</set>
@@ -314,6 +321,7 @@
     <benchmarks>ser</benchmarks>
     <datasets>T3L</datasets>
     <compiler_options>
+      &T2Options;
       <set>T3L: -O3 :-t 0 -b 2000 -q 0.200014 -m 5 -r 7 -v 2</set>
     </compiler_options>
   </execution>
@@ -324,6 +332,7 @@
     <benchmarks>parChunk, parChunkEagerStealHalf, parChunkLazyNaive, parChunkLazy</benchmarks> 
     <datasets>T3L</datasets>
     <compiler_options>
+      &T2Options;
       &scalingOptions;
       &chunkOptions;
       <set>T3L: -O3 :-t 0 -b 2000 -q 0.200014 -m 5 -r 7 -v 2</set>
@@ -359,6 +368,7 @@
     <datasets>T1L</datasets>
     <compiler_options>
       <set>T1L: -O3 :-t 1 -a 3 -d 13 -b 4 -r 29 -v 2</set>
+      &T2Options;
       &sensScalingOptions;
       &sensChunkOptionsGeo;
     </compiler_options>
@@ -385,6 +395,7 @@
     <datasets>T2L</datasets>
     <compiler_options>
       <set>T2L: -O3 :-t 1 -a 2 -d 23 -b 7 -r 220 -v 2</set>
+      &T2Options;
       &sensScalingOptions;
       &sensChunkOptionsGeo;
     </compiler_options>
@@ -397,6 +408,7 @@
     <datasets>T3L</datasets>
     <compiler_options>
       <set>T3L: -O3 :-t 0 -b 2000 -q 0.200014 -m 5 -r 7 -v 2</set>
+      &T2Options;
       &sensScalingOptions;
       &sensChunkOptionsBin;
     </compiler_options>
