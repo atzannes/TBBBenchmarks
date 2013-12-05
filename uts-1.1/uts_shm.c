@@ -665,7 +665,8 @@ int ss_steal(StealStack *s, int victim, int k) {
     stealStack[victim]->workAvail = 0;
 #else 
  #ifdef __EAGER_STEAL_HALF 
-    /* reserve half the nodes nodes */
+    /* reserve half the nodes nodes, at least k nodes, 
+       and don't leave fewer than k nodes on the victim */
     half = (victimWorkAvail >= 2*k) ? (victimWorkAvail+1)/2 // ceil(victimWorkAvail/2)
                                     : victimWorkAvail;      // don't leave fewer than k tasks 
     if (s->top + half >= s->stackSize)
