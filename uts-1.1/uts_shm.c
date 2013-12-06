@@ -615,6 +615,8 @@ int ss_acquire(StealStack *s, int k) {
   return (avail >= k);
 }
 
+void releaseNodesAfterStealHalf(StealStack *ss);
+
 /* steal k values from shared portion of victim thread's stealStack
  * onto local portion of current thread's stealStack.
  * return false if k vals are not avail in victim thread
@@ -739,6 +741,7 @@ int ss_steal(StealStack *s, int victim, int k) {
 #else
  #ifdef __EAGER_STEAL_HALF
     s->top += half;
+    releaseNodesAfterStealHalf(s);
  #else //  __NAIVE_LAZY_SCHEDULING or __ORIGINAL_UTS_SCHEDULING
     s->top += k;
  #endif
@@ -1214,22 +1217,32 @@ void cbarrier_cancel() {
 
 void releaseNodes(StealStack *ss){
   if (doSteal) {
+    const int locDepth = ss_localDepth(ss);
 #ifdef __LAZY_SCHEDULING 
-    if (ss_localDepth(ss) > 2 * chunkSize && ss->workAvail == 0) {
+    if (locDepth > 2 * chunkSize && ss->workAvail == 0) {
       // Attribute this time to runtime overhead
       ss_setState(ss, SS_OVH);
-      ss_release(ss, ss_localDepth(ss)/2);
+      ss_release(ss, locDepth/2);
 #else 
  #ifdef __NAIVE_LAZY_SCHEDULING
-    if (ss_localDepth(ss) > 2 * chunkSize && ss->workAvail == 0) {
+    if (locDepth > 2 * chunkSize && ss->workAvail == 0) {
       // Attribute this time to runtime overhead
       ss_setState(ss, SS_OVH);
       ss_release(ss, chunkSize);
  #else // __ORIGINAL_UTS_SCHEDULING || __EAGER_STEAL_HALF
-    if (ss_localDepth(ss) > 2 * chunkSize) {
+  #ifdef __EAGER_STEAL_HALF
+    // A release after a theaft is taken care of 
+    // separately after a theft
+    if (locDepth > 2 * chunkSize) {
       // Attribute this time to runtime overhead
       ss_setState(ss, SS_OVH);
       ss_release(ss, chunkSize);
+  #else // __ORIGINAL_UTS_SCHEDULING
+    if (locDepth > 2 * chunkSize) {
+      // Attribute this time to runtime overhead
+      ss_setState(ss, SS_OVH);
+      ss_release(ss, chunkSize);
+  #endif
  #endif
 #endif
       // This has significant overhead on clusters!
@@ -1248,6 +1261,27 @@ void releaseNodes(StealStack *ss){
     }
   }
 }
+
+void releaseNodesAfterStealHalf(StealStack *ss) { 
+  // release nodes (adapted from releaseNodes)
+  const int locDepth = ss_localDepth(ss);
+  // In eager steal-half we release all but k tasks
+  // because an immediately preceding steal may have
+  // brought several tasks to the private segment
+  if (locDepth > 2 * chunkSize) {
+    // Attribute this time to runtime overhead
+    ss_setState(ss, SS_OVH);
+    ss_release(ss, locDepth-chunkSize-1);
+    // This has significant overhead on clusters!
+    if (ss->nNodes % cbint == 0) {
+      ss_setState(ss, SS_CBOVH);
+      cbarrier_cancel();
+    }
+
+    ss_setState(ss, SS_WORK);
+  }
+}
+
 
 /* 
  * parallel search of UTS trees using work stealing 
@@ -1303,8 +1337,21 @@ void parTreeSearch(StealStack *ss) {
     }
     //printf("Called (FAILED) ss_acquire w. amt=%d\n", amt);
 #else // __EAGER_STEAL_HALF || __NAIVE_LAZY_SCHEDULING  ||  __ORIGINAL_UTS_SCHEDULING
+ #ifdef __EAGER_STEAL_HALF
+    // We may need to acquire more than k tasks if fewer than 2*chunkSize are available
+    // so as not to leave fewer than k tasks on the shared segment. 
+    // Note: amt will always be 1 for k=1 
+    int amt = (2*chunkSize <= ss->workAvail) ? chunkSize : max(ss->workAvail,1);
+    //if (chunkSize==1 && amt!=1)
+    //  printf("***error! in eager_steal_half amt!=1 during acquire (with chunkSize=1) (amt=%d)\n", amt);
+    
+    if (ss_acquire(ss, amt)) {
+      continue;
+    }
+ #else  // __NAIVE_LAZY_SCHEDULING  ||  __ORIGINAL_UTS_SCHEDULING
     if (ss_acquire(ss, chunkSize))
       continue;
+ #endif 
 #endif
     /* no work left in this thread's stack           */
     /* try to steal work from another thread's stack */
@@ -1419,9 +1466,10 @@ int showStats(double elapsedSecs) {
   }
 #ifdef __LAZY_SCHEDULING
   // With lazy scheduling an acquire may pick half the nodes that were 
-  // previously released. A steal takes all nodes. So trel <= tacq+tsteal
-  if (trel > tacq + tsteal) {
-    printf("*** error! total released > total acquired + total stolen\n");
+  // previously released. A steal takes all nodes. So trel <= tacq+tsteal 
+  // && trel >= tsteal
+  if (trel > tacq + tsteal || trel < tsteal) {
+    printf("*** error! total released > total acquired + total stolen OR total released < total stolen\n");
   }
 #else
  #ifdef __EAGER_STEAL_HALF
