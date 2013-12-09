@@ -33,14 +33,14 @@
   <!-- (T2) Geometric [cyclic] - Tree size = 4117769, tree depth = 81, num leaves = 2342762 (56.89%) -->
   <dataset>
     <name>T2</name>
-    <xbofile>-t 1 -a 2 -d 16 -b 6 -r 502</xbofile>
+    <!--<xbofile>-t 1 -a 2 -d 16 -b 6 -r 502</xbofile>-->
     <validhexfile>validT2.hex</validhexfile>
   </dataset>
 
   <!-- (T3) Binomial - Tree size = 4112897, tree depth = 1572, num leaves = 3599034 (87.51%) -->
   <dataset>
     <name>T3</name>
-    <xbofile>-t 0 -b 2000 -q 0.124875 -m 8 -r 42</xbofile>
+    <!--<xbofile>-t 0 -b 2000 -q 0.124875 -m 8 -r 42</xbofile>-->
     <validhexfile>validT3.hex</validhexfile>
   </dataset>
     
@@ -182,6 +182,7 @@
     <benchmarks>serTBB</benchmarks>
     <datasets>T1</datasets>
     <compiler_options>
+      &T2Options;
       <set>T1: -O3 -ltbb -ltbbmalloc : -t 1 -a 3 -d 10 -b 4 -r 19</set>       
     </compiler_options>
   </execution>
@@ -211,11 +212,36 @@
   </execution>
 
   <execution>
+    <name>serT3</name> <!-- Geometric -->
+    <type>x86</type>
+    <benchmarks>ser</benchmarks>
+    <datasets>T3</datasets>
+    <compiler_options>
+      &T2Options;
+      <set>T3: -O3 :-t 0 -b 2000 -q 0.124875 -m 8 -r 42 -v 2</set>
+    </compiler_options>
+  </execution>
+
+  <execution>
+    <name>parT3</name> <!-- Binomial -->
+    <type>x86</type>
+    <benchmarks>parChunk, parChunkEagerStealHalf, parChunkLazyNaive, parChunkLazy</benchmarks> 
+    <datasets>T3</datasets>
+    <compiler_options>
+      &T2Options;
+      &scalingOptions;
+      &chunkOptions;
+      <set>T3: -O3 :-t 0 -b 2000 -q 0.124875 -m 8 -r 42 -v 2</set>
+    </compiler_options>
+  </execution>
+
+  <execution>
     <name>parTBBT1</name> <!-- Geometric -->
     <type>tbb</type>
     <benchmarks>parTBB</benchmarks> 
     <datasets>T1</datasets>
     <compiler_options>
+      &T2Options;
       <set>T1: -O3 -ltbb -ltbbmalloc :-t 1 -a 3 -d 10 -b 4 -r 19 -v 2</set>
       &partitionerOptions;
       &scalingOptions;
@@ -240,6 +266,7 @@
     <benchmarks>serTBB</benchmarks>
     <datasets>T1L</datasets>
     <compiler_options>
+      &T2Options;
       <set>T1L: -O3 -ltbb -ltbbmalloc :-t 1 -a 3 -d 13 -b 4 -r 29 -v 2</set>
     </compiler_options>
   </execution>
@@ -263,6 +290,7 @@
     <benchmarks>parTBB</benchmarks> 
     <datasets>T1L</datasets>
     <compiler_options>
+      &T2Options;
       <set>T1L: -O3 -ltbb -ltbbmalloc :-t 1 -a 3 -d 13 -b 4 -r 29 -v 2</set>
       &partitionerOptions;
       &scalingOptions;
@@ -283,7 +311,8 @@
   <execution>
     <name>parT2L</name> <!-- Geometric -->
     <type>x86</type>
-    <benchmarks>parChunk, parChunkEagerStealHalf, parChunkLazyNaive, parChunkLazy</benchmarks> 
+    <!--<benchmarks>parChunk, parChunkEagerStealHalf, parChunkLazyNaive, parChunkLazy</benchmarks> -->
+    <benchmarks>parChunkEagerStealHalf</benchmarks> 
     <datasets>T2L</datasets>
     <compiler_options>
       &T2Options;
@@ -299,6 +328,7 @@
     <benchmarks>serTBB</benchmarks>
     <datasets>T2L</datasets>
     <compiler_options>
+      &T2Options;
       <set>T2L: -O3 -ltbb -ltbbmalloc :-t 1 -a 2 -d 23 -b 7 -r 220 -v 2</set>
     </compiler_options>
   </execution>
@@ -309,6 +339,7 @@
     <benchmarks>parTBB</benchmarks> 
     <datasets>T2L</datasets>
     <compiler_options>
+      &T2Options;
       <set>T2L: -O3 -ltbb -ltbbmalloc :-t 1 -a 2 -d 23 -b 7 -r 220 -v 2</set>
       &partitionerOptions;
       &scalingOptions;
@@ -329,11 +360,13 @@
   <execution>
     <name>parT3L</name> <!-- Binomial -->
     <type>x86</type>
-    <benchmarks>parChunk, parChunkEagerStealHalf, parChunkLazyNaive, parChunkLazy</benchmarks> 
+    <!--<benchmarks>parChunk, parChunkEagerStealHalf, parChunkLazyNaive, parChunkLazy</benchmarks> -->
+    <benchmarks>parChunkEagerStealHalf</benchmarks> 
     <datasets>T3L</datasets>
     <compiler_options>
       &T2Options;
-      &scalingOptions;
+      &scalingOptions; 
+      <!--<set>64th: : -T 64</set>-->
       &chunkOptions;
       <set>T3L: -O3 :-t 0 -b 2000 -q 0.200014 -m 5 -r 7 -v 2</set>
     </compiler_options>
@@ -345,6 +378,7 @@
     <benchmarks>serTBB</benchmarks>
     <datasets>T3L</datasets>
     <compiler_options>
+      &T2Options;
       <set>T3L: -O3 -ltbb -ltbbmalloc:-t 0 -b 2000 -q 0.200014 -m 5 -r 7 -v 2</set>
     </compiler_options>
   </execution>
@@ -355,6 +389,7 @@
     <benchmarks>parTBB</benchmarks> 
     <datasets>T3L</datasets>
     <compiler_options>
+      &T2Options;
       <set>T3L: -O3 -ltbb -ltbbmalloc :-t 0 -b 2000 -q 0.200014 -m 5 -r 7 -v 2</set>
       &partitionerOptions;
       &scalingOptions;
@@ -364,7 +399,8 @@
   <execution>
     <name>sensT1L</name> <!-- Geometric -->
     <type>x86</type>
-    <benchmarks>parChunk, parChunkEagerStealHalf, parChunkLazyNaive, parChunkLazy</benchmarks> 
+    <!--<benchmarks>parChunk, parChunkEagerStealHalf, parChunkLazyNaive, parChunkLazy</benchmarks> -->
+    <benchmarks>parChunkEagerStealHalf</benchmarks> 
     <datasets>T1L</datasets>
     <compiler_options>
       <set>T1L: -O3 :-t 1 -a 3 -d 13 -b 4 -r 29 -v 2</set>
@@ -391,7 +427,8 @@
   <execution>
     <name>sensT2L</name> <!-- Geometric -->
     <type>x86</type>
-    <benchmarks>parChunk, parChunkEagerStealHalf, parChunkLazyNaive, parChunkLazy</benchmarks> 
+    <!--<benchmarks>parChunk, parChunkEagerStealHalf, parChunkLazyNaive, parChunkLazy</benchmarks> -->
+    <benchmarks>parChunkEagerStealHalf</benchmarks> 
     <datasets>T2L</datasets>
     <compiler_options>
       <set>T2L: -O3 :-t 1 -a 2 -d 23 -b 7 -r 220 -v 2</set>
@@ -404,7 +441,8 @@
   <execution>
     <name>sensT3L</name> <!-- Binomial -->
     <type>x86</type>
-    <benchmarks>parChunk, parChunkEagerStealHalf, parChunkLazyNaive, parChunkLazy</benchmarks> 
+    <!--<benchmarks>parChunk, parChunkEagerStealHalf, parChunkLazyNaive, parChunkLazy</benchmarks> -->
+    <benchmarks>parChunkEagerStealHalf</benchmarks> 
     <datasets>T3L</datasets>
     <compiler_options>
       <set>T3L: -O3 :-t 0 -b 2000 -q 0.200014 -m 5 -r 7 -v 2</set>
