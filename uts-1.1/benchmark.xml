@@ -241,6 +241,28 @@
   </execution>
 
   <execution>
+    <name>serTBBT3</name> <!-- Geometric -->
+    <type>tbb</type>
+    <benchmarks>serTBB</benchmarks>
+    <datasets>T3</datasets>
+    <compiler_options>
+      &T2Options;
+      <set>T3: -O3 -ltbb -ltbbmalloc: -t 0 -b 2000 -q 0.124875 -m 8 -r 42 -v 2</set>
+    </compiler_options>
+  </execution>
+
+  <execution>
+    <name>serTBBT3M</name> <!-- Binomial -->
+    <type>tbb</type>
+    <benchmarks>serTBB</benchmarks>
+    <datasets>T3M</datasets>
+    <compiler_options>
+      &T2Options;
+      <set>T3M: -O3 -ltbb -ltbbmalloc: -t 0 -b 2000 -q 0.1666 -m 6 -r 7 -v 2</set>
+    </compiler_options>
+  </execution>
+
+  <execution>
     <name>parT3</name> <!-- Binomial -->
     <type>x86</type>
     <benchmarks>parChunk, parChunkEagerStealHalf, parChunkLazyNaive, parChunkLazy</benchmarks> 
@@ -263,6 +285,32 @@
       &scalingOptions;
       &chunkOptions;
       <set>T3: -O3 :-t 0 -b 2000 -q 0.1666 -m 6 -r 7 -v 2</set>
+    </compiler_options>
+  </execution>
+
+  <execution>
+    <name>parTBBT3</name> <!-- Binomial -->
+    <type>tbb</type>
+    <benchmarks>parTBB</benchmarks> 
+    <datasets>T3</datasets>
+    <compiler_options>
+      &T2Options;
+      <set>T3: -O3 -ltbb -ltbbmalloc: -t 0 -b 2000 -q 0.124875 -m 8 -r 42 -v 2</set>
+      &partitionerOptions;
+      &scalingOptions;
+    </compiler_options>
+  </execution>
+
+  <execution>
+    <name>parTBBT3M</name> <!-- Binomial -->
+    <type>tbb</type>
+    <benchmarks>parTBB</benchmarks> 
+    <datasets>T3M</datasets>
+    <compiler_options>
+      &T2Options;
+      <set>T3: -O3 -ltbb -ltbbmalloc: -t 0 -b 2000 -q 0.1666 -m 6 -r 7 -v 2</set>
+      &partitionerOptions;
+      &scalingOptions;
     </compiler_options>
   </execution>
 
@@ -305,7 +353,8 @@
   <execution>
     <name>parT1L</name> <!-- Geometric -->
     <type>x86</type>
-    <benchmarks>parChunk, parChunkEagerStealHalf, parChunkLazyNaive, parChunkLazy</benchmarks> 
+    <!--<benchmarks>parChunk, parChunkEagerStealHalf, parChunkLazyNaive, parChunkLazy</benchmarks> -->
+    <benchmarks>parChunkEagerStealHalf</benchmarks> 
     <datasets>T1L</datasets>
     <compiler_options>
       &T2Options;
