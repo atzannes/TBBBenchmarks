@@ -51,6 +51,13 @@
     <validhexfile>validT3M.hex</validhexfile>
   </dataset>
     
+  <!-- (T3ML) Binomial - Tree size = 71211941, tree depth = 5888, num leaves = 56977552 (80.01%) -->
+  <dataset>
+    <name>T3ML</name>
+    <!--<xbofile>-t 0 -b 40000 -q 0.19999 -m 5 -r 7</xbofile>-->
+    <validhexfile>validT3ML.hex</validhexfile>
+  </dataset>
+    
   <!-- (T4) Hybrid - Tree size = 4132453, tree depth = 134, num leaves = 3108986 (75.23%) -->
   <dataset>
     <name>T4</name>
@@ -263,6 +270,17 @@
   </execution>
 
   <execution>
+    <name>serTBBT3ML</name> <!-- Binomial -->
+    <type>tbb</type>
+    <benchmarks>serTBB</benchmarks>
+    <datasets>T3ML</datasets>
+    <compiler_options>
+      &T2Options;
+      <set>T3M: -O3 -ltbb -ltbbmalloc: -t 0 -b 40000 -q 0.19999 -m 5 -r 7 -v 2</set>
+    </compiler_options>
+  </execution>
+
+  <execution>
     <name>parT3</name> <!-- Binomial -->
     <type>x86</type>
     <benchmarks>parChunk, parChunkEagerStealHalf, parChunkLazyNaive, parChunkLazy</benchmarks> 
@@ -309,6 +327,19 @@
     <compiler_options>
       &T2Options;
       <set>T3: -O3 -ltbb -ltbbmalloc: -t 0 -b 2000 -q 0.1666 -m 6 -r 7 -v 2</set>
+      &partitionerOptions;
+      &scalingOptions;
+    </compiler_options>
+  </execution>
+
+  <execution>
+    <name>parTBBT3ML</name> <!-- Binomial -->
+    <type>tbb</type>
+    <benchmarks>parTBB</benchmarks> 
+    <datasets>T3ML</datasets>
+    <compiler_options>
+      &T2Options;
+      <set>T3: -O3 -ltbb -ltbbmalloc: -t 0 -b 40000 -q 0.19999 -m 5 -r 7 -v 2</set>
       &partitionerOptions;
       &scalingOptions;
     </compiler_options>
