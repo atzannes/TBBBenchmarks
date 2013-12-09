@@ -44,6 +44,13 @@
     <validhexfile>validT3.hex</validhexfile>
   </dataset>
     
+  <!-- (T3M) Binomial - Tree size = 14086677, tree depth = 4061, num leaves = 11739230 (83.34%) -->
+  <dataset>
+    <name>T3M</name>
+    <!--<xbofile>-t 0 -b 2000 -q 0.1666 -m 6 -r 7</xbofile>-->
+    <validhexfile>validT3M.hex</validhexfile>
+  </dataset>
+    
   <!-- (T4) Hybrid - Tree size = 4132453, tree depth = 134, num leaves = 3108986 (75.23%) -->
   <dataset>
     <name>T4</name>
@@ -212,13 +219,24 @@
   </execution>
 
   <execution>
-    <name>serT3</name> <!-- Geometric -->
+    <name>serT3</name> <!-- Binomial -->
     <type>x86</type>
     <benchmarks>ser</benchmarks>
     <datasets>T3</datasets>
     <compiler_options>
       &T2Options;
       <set>T3: -O3 :-t 0 -b 2000 -q 0.124875 -m 8 -r 42 -v 2</set>
+    </compiler_options>
+  </execution>
+
+  <execution>
+    <name>serT3M</name> <!-- Binomial -->
+    <type>x86</type>
+    <benchmarks>ser</benchmarks>
+    <datasets>T3M</datasets>
+    <compiler_options>
+      &T2Options;
+      <set>T3M: -O3 :-t 0 -b 2000 -q 0.1666 -m 6 -r 7 -v 2</set>
     </compiler_options>
   </execution>
 
@@ -232,6 +250,19 @@
       &scalingOptions;
       &chunkOptions;
       <set>T3: -O3 :-t 0 -b 2000 -q 0.124875 -m 8 -r 42 -v 2</set>
+    </compiler_options>
+  </execution>
+
+  <execution>
+    <name>parT3M</name> <!-- Binomial -->
+    <type>x86</type>
+    <benchmarks>parChunk, parChunkEagerStealHalf, parChunkLazyNaive, parChunkLazy</benchmarks> 
+    <datasets>T3M</datasets>
+    <compiler_options>
+      &T2Options;
+      &scalingOptions;
+      &chunkOptions;
+      <set>T3: -O3 :-t 0 -b 2000 -q 0.1666 -m 6 -r 7 -v 2</set>
     </compiler_options>
   </execution>
 
